@@ -1,0 +1,48 @@
+h1 { color: orange;}
+body{
+    margin:0;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+nav{
+background-color: orange;
+display:flex;
+justify-content: space-between;
+padding: 1rem;
+}
+
+nav > ul{
+    display:flex;
+    gap:2rem;
+}
+
+aside{
+background-color: purple;
+}
+main{
+background-color: lightblue;
+}
+.container{
+background-color: purple;
+
+display: grid;
+grid-template-columns: 20% 80%;
+height: calc(100vh - 5rem);
+}
+@media screen and (max-width:400px){
+    .container{
+        grid-template-columns: 1fr;
+    }
+    aside{
+        position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5rem;
+    justify-content: center;
+    align-items: center;
+    }
+    
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+    <script src="public/scripts/main.js" defer></script>
+</head>
+<body>
+    <nav>
+        <p> LOGO</p>
+        <ul>
+            <l1>DASHBOARD</l1>
+            <l1>USERS</l1>
+            <l1>REPORTS</l1>
+        </ul>
+        </nav>
+    <div class="container">
+        <aside>
+            <p> MOJ TOOLBAR</p>
+        </aside>
+        <main>
+            <h1> DASHBOARD</h1>
+            <ul>
+        <?php foreach($array as $key=>$value): ?> 
+            <tr> 
+                <td><?php echo $key; ?></td> 
+            </tr> 
+        <?php endforeach; ?>
+        </ul>
+        </main>
+    </div>
+</body>
+</html>
