@@ -40,5 +40,5 @@ class SecurityController extends AppController{
         'href' => '/cards/ten-of-hearts'
     ],
 ];
-return $this->render("dasgviard", ['items'=>$cards]);
+return $this->render("dashboard", ['array' => $cards]);
 }}

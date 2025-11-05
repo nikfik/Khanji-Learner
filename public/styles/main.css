@@ -17,7 +17,6 @@ nav > ul{
     display:flex;
     gap:2rem;
 }
-
 aside{
 background-color: purple;
 }
