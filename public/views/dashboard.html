@@ -1,34 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Kanji Master - Alfabety</title>
     <link rel="stylesheet" type="text/css" href="public/styles/main.css">
-    <script src="public/scripts/main.js" defer></script>
 </head>
 <body>
-    <nav>
-        <p> LOGO</p>
-        <ul>
-            <l1>DASHBOARD</l1>
-            <l1>USERS</l1>
-            <l1>REPORTS</l1>
-        </ul>
+    <div class="app-container">
+        <nav class="top-toolbar">
+            <div class="logo">Kanji Master</div>
+            <div class="nav-links">
+                <a href="#" class="active">Alfabety</a>
+                <a href="/dashboard">Zajęcia</a>
+                <a href="#">Profil</a>
+            </div>
         </nav>
-    <div class="container">
-        <aside>
-            <p> MOJ TOOLBAR</p>
-        </aside>
-        <main>
-            <h1> DASHBOARD</h1>
-            <ul>
-        <?php foreach($items as $key => $value): ?> 
-            <tr> 
-                <td><?php echo $key; ?></td> 
-            </tr> 
-        <?php endforeach; ?>
-        </ul>
+
+        <main class="content">
+            <header class="main-header">
+                <h1>Wybierz, czego chcesz się dziś uczyć</h1>
+                <p>Rozpocznij swoją podróż w głąb japońskiego pisma.</p>
+            </header>
+
+            <section class="alphabet-grid">
+                
+                <div class="alphabet-card">
+                    <div class="card-text">
+                        <h3>Hiragana</h3>
+                        <p>Podstawowy japoński sylabariusz.</p>
+                    </div>
+                    <div class="symbol-bg">あ</div>
+                    <span class="arrow-icon">→</span>
+                </div>
+
+                <div class="alphabet-card">
+                    <div class="card-text">
+                        <h3>Katakana</h3>
+                        <p>Do słów obcego pochodzenia i emfazy.</p>
+                    </div>
+                    <div class="symbol-bg">カ</div>
+                    <span class="arrow-icon">→</span>
+                </div>
+
+                <div class="alphabet-card">
+                    <div class="card-text">
+                        <h3>Kanji</h3>
+                        <p>Znaki logograficzne pochodzenia chińskiego.</p>
+                    </div>
+                    <div class="symbol-bg">字</div>
+                    <span class="arrow-icon">→</span>
+                </div>
+
+            </section>
         </main>
     </div>
 </body>

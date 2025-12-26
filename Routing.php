@@ -15,10 +15,15 @@ class Routing{
         'dashboard'=>[
             'controller'=>"DashboardController",
             'action'=>'index'
+        ],
+         'dashboardmain'=>[
+            'controller'=>"DashboardController",
+            'action'=>'index'
         ]
     ];
 public static function run(string $path) {
     switch($path){//regex aby przetworzyc np dashboard/5467 
+        case 'dashboardmain':
         case 'dashboard':
         case 'register':
         case 'login':

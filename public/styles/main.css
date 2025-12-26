@@ -1,48 +1,102 @@
-h1 { color: orange;}
-body{
-    margin:0;
-    height: 100vh;
 
-    display: flex;
-    flex-direction: column;
-}
-nav{
-background-color: orange;
-display:flex;
-justify-content: space-between;
-padding: 1rem;
-}
-
-nav > ul{
-    display:flex;
-    gap:2rem;
-}
-aside{
-background-color: purple;
-}
-main{
-background-color: lightblue;
-}
-
-.container{
-background-color: purple;
-
-display: grid;
-grid-template-columns: 20% 80%;
-height: calc(100vh - 5rem);
-}
-@media screen and (max-width:400px){
-    .container{
-        grid-template-columns: 1fr;
-    }
-    aside{
-        position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 5rem;
-    justify-content: center;
-    align-items: center;
-    }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
+    background-color: #ff86061f; 
+   
+}
+.app-container {
+    max-width: 1000px; /* Możesz zwiększyć, jeśli to ma być na desktop */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Toolbar na górze */
+.top-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #f43939;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 20px;
+    color: #333;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #777;
+    margin-left: 20px;
+    font-weight: 500;
+}
+
+.nav-links a.active {
+    color: #f39200;
+    border-bottom: 2px solid #f39200;
+}
+
+/* Header */
+.main-header {
+    margin: 40px 0;
+}
+
+.main-header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* GRID ALFABETÓW */
+.alphabet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* To sprawia, że są obok siebie */
+    gap: 20px;
+}
+
+.alphabet-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.alphabet-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.card-text h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.card-text p {
+    color: #777;
+    font-size: 14px;
+    margin: 5px 0 0;
+    max-width: 150px;
+}
+
+/* Duży znak w tle karty */
+.symbol-bg {
+    font-size: 60px;
+    color: #f39200; 
+    font-weight: bold;
+    position: absolute;
+    right: 50px;
+}
+
+.arrow-icon {
+    color: #f39200;
+    font-size: 24px;
+    font-weight: bold;
 }

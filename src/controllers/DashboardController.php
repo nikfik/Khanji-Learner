@@ -3,6 +3,16 @@
 require_once 'AppController.php';
 require_once __DIR__.'/../repository/UserRepository.php';
 class DashboardController extends AppController{
+    public function dashboard() {
+    // W przyszłości te dane pobierzesz z bazy danych
+    $userProgress = [
+        'hiragana' => ['percent' => 10, 'label' => '5/46'], // Przykład z ekranu 7
+        'katakana' => ['percent' => 0, 'label' => '0/46'],
+        'kanji' => ['percent' => 7, 'label' => '150/2136']
+    ];
+
+    $this->render('dashboard', ['progress' => $userProgress]);
+}
     public function index() {
     $cards = [
     [
@@ -42,10 +52,10 @@ class DashboardController extends AppController{
     ],
 ];
 
-    $userRepository = new UserRepository();
-    $users = $userRepository->getUsers();
+    //$userRepository = new UserRepository();
+    //$users = $userRepository->getUsers();
 
-    var_dump($users);
+    //var_dump($users);
 
 return $this->render("dashboard", ['items' => $cards]);
 }}
