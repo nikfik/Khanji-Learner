@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,5 +17,38 @@
         <input name="passowrd" type="password" placeholder="Twój password">
         <button type="submit">LOGIN</button>
     </form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanji Master - Logowanie</title>
+    <link rel="stylesheet" href="public/styles/login2.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <img src="path/to/your/icon.png" alt="Kanji Master Logo" class="app-logo"> <h1>Witaj z powrotem</h1> </div>
+
+        <form action="login_process.php" method="POST">
+            <div class="input-group">
+                <label for="username">Nazwa użytkownika / E-mail</label> <input type="text" id="username" name="username" placeholder="Wprowadź nazwę użytkownika lub e-mail" required> </div>
+
+            <div class="input-group">
+                <label for="password">Hasło</label> <div class="password-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Wprowadź swoje hasło" required> <span class="eye-icon">👁️</span>
+                </div>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#">Nie pamiętasz hasła?</a> </div>
+
+            <button type="submit" class="btn-login">Zaloguj się</button> </form>
+
+        <div class="register-link">
+            Nie masz konta? <a href="register.php">Zarejestruj się</a> </div>
+    </div>
 </body>
 </html>
