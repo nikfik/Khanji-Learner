@@ -1,7 +1,8 @@
 
 <?php
 require_once 'AppController.php';
-class SecurityController extends AppController{
+require_once __DIR__.'/../repository/UserRepository.php';
+class DashboardController extends AppController{
     public function index() {
     $cards = [
     [
@@ -40,5 +41,11 @@ class SecurityController extends AppController{
         'href' => '/cards/ten-of-hearts'
     ],
 ];
-return $this->render("dashboard", ['array' => $cards]);
+
+    $userRepository = new UserRepository();
+    $users = $userRepository->getUsers();
+
+    var_dump($users);
+
+return $this->render("dashboard", ['items' => $cards]);
 }}

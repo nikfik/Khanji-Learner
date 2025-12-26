@@ -1,7 +1,18 @@
 <?php
 class AppController{
 
-    protected function render(?string $template = null, array $variables =[]){
+
+protected function isGet():bool
+{
+    return $_SERVER['REQUEST_METHOD'] =='GET';
+}
+
+protected function isPost():bool
+{
+    return $_SERVER['REQUEST_METHOD'] =='POST';
+}
+
+protected function render(?string $template = null, array $variables =[]){
     $templatePath = 'public/views/'.$template.'.html';
     $templatePath404 = 'public/views/404.html';
     $output = "";

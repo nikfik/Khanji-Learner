@@ -20,8 +20,7 @@ class Routing{
 public static function run(string $path) {
     switch($path){//regex aby przetworzyc np dashboard/5467 
         case 'dashboard':
-            //include 'public/views/dashboard.html';
-            //break;
+        case 'register':
         case 'login':
             $controller = new  Routing::$routes[$path]['controller'];//zmienic na singleton
             $action = Routing::$routes[$path]['action'];
