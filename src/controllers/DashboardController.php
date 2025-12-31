@@ -13,6 +13,32 @@ class DashboardController extends AppController{
 
     $this->render('dashboard', ['progress' => $userProgress]);
 }
+public function characters() {
+    // W rzeczywistym systemie pobierzesz to z bazy na podstawie parametru w URL
+    // Na potrzeby testu symulujemy dane:
+    $type = $_GET['type'] ?? 'hiragana'; 
+
+    $data = [];
+    if ($type === 'hiragana') {
+        $data = [
+            ['char' => 'あ', 'romaji' => 'a'],
+            ['char' => 'い', 'romaji' => 'i'],
+            ['char' => 'う', 'romaji' => 'u']
+        ];
+        $title = "Hiragana";
+    } else {
+        $data = [
+            ['char' => 'ア', 'romaji' => 'a'],
+            ['char' => 'イ', 'romaji' => 'i']
+        ];
+        $title = "Katakana";
+    }
+
+    $this->render('characters', [
+        'title' => $title,
+        'characters' => $data
+    ]);
+}
     public function index() {
     $cards = [
     [

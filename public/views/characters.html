@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanji Master - Alfabety</title>
+    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="top-toolbar">
+            <div class="logo">Kanji Master</div>
+            <div class="nav-links">
+                <a href="#" class="active">Alfabety</a>
+                <a href="/dashboard">Zajęcia</a>
+                <a href="#">Profil</a>
+            </div>
+        </nav>
+
+<main class="content">
+    <header class="main-header">
+        <a href="/dashboard" class="back-link">← Powrót</a>
+        <h1><?php echo $title; ?></h1>
+    </header>
+
+    <div class="characters-grid">
+        <?php foreach($characters as $c): ?>
+            <div class="char-card">
+                <span class="jp-char"><?php echo $c['char']; ?></span>
+                <span class="romaji"><?php echo $c['romaji']; ?></span>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</main>
+    </div>
+</body>
+</html>
