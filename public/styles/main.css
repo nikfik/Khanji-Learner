@@ -100,3 +100,15 @@ body {
     font-size: 24px;
     font-weight: bold;
 }
+.char-card.mastered {
+    border: 2px solid #f39200; /* Pomarańczowy/Złoty kolor z Figmy */
+    background-color: #fff9f5;
+    box-shadow: 0 0 10px rgba(243, 146, 0, 0.2);
+}
+
+.view-counter {
+    font-size: 9px;
+    color: #bbb;
+    position: absolute;
+    bottom: 5px;
+}

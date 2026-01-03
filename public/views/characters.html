@@ -24,13 +24,14 @@
     </header>
 
     <div class="characters-grid">
-        <?php foreach($characters as $c): ?>
-            <div class="char-card">
-                <span class="jp-char"><?php echo $c['char']; ?></span>
-                <span class="romaji"><?php echo $c['romaji']; ?></span>
-            </div>
-        <?php endforeach; ?>
-    </div>
+    <?php foreach($characters as $c): ?>
+        <div class="char-card <?php echo $c['is_mastered'] ? 'mastered' : ''; ?>">
+            <span class="jp-char"><?php echo $c['symbol']; ?></span>
+            <span class="romaji"><?php echo $c['romaji']; ?></span>
+            <span class="view-counter"><?php echo $c['view_count']; ?>/10</span>
+        </div>
+    <?php endforeach; ?>
+</div>
 </main>
     </div>
 </body>

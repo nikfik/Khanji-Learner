@@ -2,6 +2,7 @@
 <?php
 require_once 'AppController.php';
 require_once __DIR__.'/../repository/UserRepository.php';
+require_once __DIR__.'/../repository/CharacterRepository.php';
 class DashboardController extends AppController{
     public function dashboard() {
     // W przyszłości te dane pobierzesz z bazy danych
@@ -14,29 +15,19 @@ class DashboardController extends AppController{
     $this->render('dashboard', ['progress' => $userProgress]);
 }
 public function characters() {
-    // W rzeczywistym systemie pobierzesz to z bazy na podstawie parametru w URL
-    // Na potrzeby testu symulujemy dane:
-    $type = $_GET['type'] ?? 'hiragana'; 
+    $setId = $_GET['id'] ?? 1; // ID zestawu z adresu URL
+    $userId = 1; // TODO: Pobierz z sesji $_SESSION['user_id']
 
-    $data = [];
-    if ($type === 'hiragana') {
-        $data = [
-            ['char' => 'あ', 'romaji' => 'a'],
-            ['char' => 'い', 'romaji' => 'i'],
-            ['char' => 'う', 'romaji' => 'u']
-        ];
-        $title = "Hiragana";
-    } else {
-        $data = [
-            ['char' => 'ア', 'romaji' => 'a'],
-            ['char' => 'イ', 'romaji' => 'i']
-        ];
-        $title = "Katakana";
-    }
+    $characterRepository = new CharacterRepository();
+    $characters = $characterRepository->getCharactersBySet($setId, $userId);
+    
+    // Pobieramy nazwę zestawu dla nagłówka
+    // (Możesz dodać metodę getSetTitle w repozytorium)
+    $title = ($setId == 1) ? "Hiragana" : "Katakana"; 
 
     $this->render('characters', [
         'title' => $title,
-        'characters' => $data
+        'characters' => $characters
     ]);
 }
     public function index() {
