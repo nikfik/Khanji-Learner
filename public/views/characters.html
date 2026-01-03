@@ -23,14 +23,29 @@
         <h1><?php echo $title; ?></h1>
     </header>
 
-    <div class="characters-grid">
+    <div class="character-grid">
     <?php foreach($characters as $c): ?>
+    <div class="alphabet-card">
         <div class="char-card <?php echo $c['is_mastered'] ? 'mastered' : ''; ?>">
             <span class="jp-char"><?php echo $c['symbol']; ?></span>
             <span class="romaji"><?php echo $c['romaji']; ?></span>
             <span class="view-counter"><?php echo $c['view_count']; ?>/10</span>
         </div>
+    </div>
     <?php endforeach; ?>
+</div>
+<div id="char-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="stroke-container">
+            <img id="stroke-img" src="" alt="Stroke Order">
+        </div>
+        <div class="char-details">
+            <h1 id="modal-symbol">あ</h1>
+            <p id="modal-romaji">a</p>
+        </div>
+        <button onclick="markAsSeen()">Oznacz jako przeczytane</button>
+    </div>
 </div>
 </main>
     </div>

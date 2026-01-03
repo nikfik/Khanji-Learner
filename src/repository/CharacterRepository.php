@@ -36,4 +36,17 @@ class CharacterRepository extends Repository {
         $stmt->bindParam(':charId', $character_id, PDO::PARAM_INT);
         $stmt->execute();
     }
+    public function getRandomCharactersForStudy(int $setId, int $limit = 15): array {
+    $stmt = $this->database->connect()->prepare('
+        SELECT * FROM characters 
+        WHERE set_id = :setId 
+        ORDER BY RANDOM() 
+        LIMIT :limit
+    ');
+    $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }   

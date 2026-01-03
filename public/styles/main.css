@@ -112,3 +112,9 @@ body {
     position: absolute;
     bottom: 5px;
 }
+/*GRID ZNAKÓW*/
+.character-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 5fr)); 
+    gap: 20px;
+}
