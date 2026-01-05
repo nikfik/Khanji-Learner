@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanji Master - Alfabety</title>
-    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+    <link rel="stylesheet" type="text/css" href="public/styles/characters.css">
 </head>
 <body>
     <div class="app-container">
@@ -25,9 +25,10 @@
 
     <div class="character-grid">
     <?php foreach($characters as $c): ?>
-    <div class="alphabet-card">
+    <div class="character-card">
         <div class="char-card <?php echo $c['is_mastered'] ? 'mastered' : ''; ?>">
-            <span class="jp-char"><?php echo $c['symbol']; ?></span>
+            <div class="symbol-bg">
+            <span class="jp-char"><?php echo $c['symbol']; ?></span></div>
             <span class="romaji"><?php echo $c['romaji']; ?></span>
             <span class="view-counter"><?php echo $c['view_count']; ?>/10</span>
         </div>

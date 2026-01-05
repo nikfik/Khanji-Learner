@@ -1,4 +1,3 @@
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
@@ -10,6 +9,7 @@ body {
     margin: 0 auto;
     padding: 0 20px;
 }
+
 
 /* Toolbar na górze */
 .top-toolbar {
@@ -25,7 +25,6 @@ body {
     font-size: 20px;
     color: #333;
 }
-
 .nav-links a {
     text-decoration: none;
     color: #777;
@@ -48,14 +47,13 @@ body {
     margin-bottom: 10px;
 }
 
-/* GRID ALFABETÓW */
-.alphabet-grid {
+/*GRID ZNAKÓW*/
+.character-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* To sprawia, że są obok siebie */
+    grid-template-columns: repeat(5, minmax(100px, 1fr)); 
     gap: 20px;
 }
-
-.alphabet-card {
+.character-card {
     background: #fff;
     border: 1px solid #eee;
     border-radius: 20px;
@@ -68,8 +66,7 @@ body {
     position: relative;
     overflow: hidden;
 }
-
-.alphabet-card:hover {
+.character-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
@@ -88,17 +85,12 @@ body {
 
 /* Duży znak w tle karty */
 .symbol-bg {
-    font-size: 60px;
+    font-size: 50px;
     color: #f39200; 
     font-weight: bold;
     position: absolute;
-    right: 50px;
-}
-
-.arrow-icon {
-    color: #f39200;
-    font-size: 24px;
-    font-weight: bold;
+    align-self: center;
+    right: 60px;
 }
 .char-card.mastered {
     border: 2px solid #f39200; /* Pomarańczowy/Złoty kolor z Figmy */
