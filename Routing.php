@@ -23,6 +23,14 @@ class Routing{
         'characters'=>[
             'controller'=>"DashboardController",
             'action'=>'characters'
+        ],
+        'api/learning/start'=>[
+            'controller'=>"DashboardController",
+            'action'=>'startLearning'
+        ],
+        'api/learning/finish'=>[
+            'controller'=>"DashboardController",
+            'action'=>'finishLearning'
         ]
     ];
 public static function run(string $path) {
@@ -32,6 +40,8 @@ public static function run(string $path) {
         case 'register':
         case 'login':
         case 'characters':
+        case 'api/learning/start':
+        case 'api/learning/finish':
             $controller = new  Routing::$routes[$path]['controller'];//zmienic na singleton
             $action = Routing::$routes[$path]['action'];
             $controller->$action();

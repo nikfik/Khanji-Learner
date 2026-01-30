@@ -21,6 +21,7 @@
     <header class="main-header">
         <a href="/dashboard" class="back-link">← Powrót</a>
         <h1><?php echo $title; ?></h1>
+        <button class="start-learning-btn" onclick="startLearningSession(<?php echo $_GET['id'] ?? 1; ?>)">🎯 Rozpocznij naukę</button>
     </header>
 
     <div class="character-grid">
@@ -58,7 +59,62 @@
         </div>
     </div>
 </div>
+
+<!-- Modal do nauki -->
+<div id="learning-modal" class="modal-overlay">
+    <div class="learning-modal-content">
+        <button class="close-modal" onclick="closeLearningModal()">&times;</button>
+        
+        <div class="learning-header">
+            <h3>Sesja nauki</h3>
+            <div class="progress-indicator">
+                <span id="current-card">1</span> / <span id="total-cards">15</span>
+            </div>
+        </div>
+        
+        <div class="learning-body">
+            <!-- Strona 1: Pokazanie znaku -->
+            <div id="show-phase" class="learning-phase active">
+                <div class="stroke-display">
+                    <img id="learning-stroke-img" src="" alt="Stroke Order">
+                </div>
+                <div class="character-display">
+                    <h2 id="learning-char">あ</h2>
+                    <p class="romaji-text" id="learning-romaji">a</p>
+                </div>
+                <button class="primary-btn" onclick="switchToDrawPhase()">Zacznij rysować →</button>
+            </div>
+            
+            <!-- Strona 2: Rysowanie -->
+            <div id="draw-phase" class="learning-phase">
+                <div class="canvas-container">
+                    <canvas id="drawing-canvas" width="300" height="300"></canvas>
+                </div>
+                <div class="draw-controls">
+                    <button class="secondary-btn" onclick="clearCanvas()">🔄 Wyczyść</button>
+                    <button class="secondary-btn" onclick="showReference()">👁️ Podpowiedź</button>
+                </div>
+                <div class="draw-buttons">
+                    <button class="success-btn" onclick="markCorrect()">✓ Dobrze</button>
+                    <button class="warning-btn" onclick="markIncorrect()">✗ Źle</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ekran końcowy -->
+        <div id="results-phase" class="learning-phase">
+            <h2>🎉 Sesja zakończona!</h2>
+            <div class="results-summary">
+                <p>Poprawne: <span id="correct-count" class="stat-green">0</span></p>
+                <p>Błędne: <span id="incorrect-count" class="stat-red">0</span></p>
+            </div>
+            <button class="primary-btn" onclick="finishLearning()">Zakończ</button>
+        </div>
+    </div>
+</div>
+
 </main>
     </div>
+    <script src="public/scripts/main.js"></script>
 </body>
 </html>

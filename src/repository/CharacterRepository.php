@@ -37,16 +37,63 @@ class CharacterRepository extends Repository {
         $stmt->execute();
     }
     public function getRandomCharactersForStudy(int $setId, int $limit = 15): array {
-    $stmt = $this->database->connect()->prepare('
-        SELECT * FROM characters 
-        WHERE set_id = :setId 
-        ORDER BY RANDOM() 
-        LIMIT :limit
-    ');
-    $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->execute();
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM characters 
+            WHERE set_id = :setId 
+            ORDER BY RANDOM() 
+            LIMIT :limit
+        ');
+        $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateLearningProgress(int $userId, array $results) {
+        $conn = $this->database->connect();
+        
+        try {
+            $conn->beginTransaction();
+            
+            foreach ($results as $result) {
+                $characterId = $result['character_id'];
+                $isCorrect = $result['correct'];
+                
+                // Zwiększ view_count dla wszystkich
+                $stmt = $conn->prepare('
+                    INSERT INTO user_progress (user_id, character_id, view_count, is_mastered)
+                    VALUES (:userId, :charId, 1, false)
+                    ON CONFLICT (user_id, character_id)
+                    DO UPDATE SET 
+                        view_count = user_progress.view_count + 1,
+                        updated_at = CURRENT_TIMESTAMP
+                ');
+                $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+                $stmt->bindParam(':charId', $characterId, PDO::PARAM_INT);
+                $stmt->execute();
+                
+                // Jeśli poprawna odpowiedź, zwiększ mastery level
+                if ($isCorrect) {
+                    $stmt = $conn->prepare('
+                        UPDATE user_progress 
+                        SET is_mastered = CASE 
+                            WHEN view_count >= 10 THEN true 
+                            ELSE false 
+                        END
+                        WHERE user_id = :userId AND character_id = :charId
+                    ');
+                    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+                    $stmt->bindParam(':charId', $characterId, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+            }
+            
+            $conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $conn->rollBack();
+            throw $e;
+        }
+    }
 }   
