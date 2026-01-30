@@ -1,3 +1,46 @@
+/* Stylowanie linków do alfabetów */
+.alphabet-card-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block;
+}
+.alphabet-card-link:visited,
+.alphabet-card-link:active,
+.alphabet-card-link:focus {
+    color: inherit !important;
+    text-decoration: none !important;
+    outline: none !important;
+}
+.alphabet-card-link:hover .alphabet-card {
+    box-shadow: 0 8px 24px rgba(243,146,0,0.15);
+    transform: translateY(-3px) scale(1.03);
+    border-radius: 18px;
+}
+
+/* Stylowanie linków na dashboardzie */
+.alphabet-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.alphabet-card-link:visited {
+    color: inherit;
+}
+.alphabet-card-link:focus {
+    outline: none;
+}
+.alphabet-card-link .alphabet-card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    border: 1px solid #eee;
+    border-radius: 20px;
+    background: #fff;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+}
+.alphabet-card-link:hover .alphabet-card {
+    box-shadow: 0 10px 24px rgba(243,146,0,0.18);
+    border-color: #f39200;
+    transform: translateY(-4px) scale(1.03);
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -99,16 +142,4 @@ body {
     color: #f39200;
     font-size: 24px;
     font-weight: bold;
-}
-.char-card.mastered {
-    border: 2px solid #f39200; /* Pomarańczowy/Złoty kolor z Figmy */
-    background-color: #fff9f5;
-    box-shadow: 0 0 10px rgba(243, 146, 0, 0.2);
-}
-
-.view-counter {
-    font-size: 9px;
-    color: #bbb;
-    position: absolute;
-    bottom: 5px;
 }

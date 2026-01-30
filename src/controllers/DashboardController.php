@@ -19,10 +19,20 @@ public function characters() {
 
     $characterRepository = new CharacterRepository();
     $characters = $characterRepository->getCharactersBySet($setId, $userId);
-    
-    // Pobieramy nazwę zestawu dla nagłówka
-    // (Możesz dodać metodę getSetTitle w repozytorium)
-    $title = ($setId == 1) ? "Hiragana" : "Katakana"; 
+
+    // Dynamiczna nazwa alfabetu
+    $title = 'Alfabet';
+    switch ($setId) {
+        case 1:
+            $title = 'Hiragana';
+            break;
+        case 2:
+            $title = 'Katakana';
+            break;
+        case 3:
+            $title = 'Kanji';
+            break;
+    }
 
     $this->render('characters', [
         'title' => $title,
