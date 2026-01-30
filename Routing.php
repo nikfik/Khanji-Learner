@@ -1,6 +1,7 @@
 <?php
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/CharacterController.php';
 class Routing{
 
     public static $routes=[
@@ -25,11 +26,11 @@ class Routing{
             'action'=>'characters'
         ],
         'api/learning/start'=>[
-            'controller'=>"DashboardController",
+            'controller'=>"CharacterController",
             'action'=>'startLearning'
         ],
         'api/learning/finish'=>[
-            'controller'=>"DashboardController",
+            'controller'=>"CharacterController",
             'action'=>'finishLearning'
         ]
     ];

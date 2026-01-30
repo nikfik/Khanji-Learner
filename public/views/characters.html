@@ -21,7 +21,7 @@
     <header class="main-header">
         <a href="/dashboard" class="back-link">← Powrót</a>
         <h1><?php echo $title; ?></h1>
-        <button class="start-learning-btn" onclick="startLearningSession(<?php echo $_GET['id'] ?? 1; ?>)">🎯 Rozpocznij naukę</button>
+        <button class="start-learning-btn" id="start-learning-btn" data-set-id="<?php echo $_GET['id'] ?? 1; ?>">🎯 Rozpocznij naukę</button>
     </header>
 
     <div class="character-grid">

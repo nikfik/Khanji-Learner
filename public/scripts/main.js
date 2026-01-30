@@ -20,6 +20,7 @@ window.onclick = function(event) {
     }
 }
 
+
 // ==================== SYSTEM NAUKI ====================
 
 let learningSession = {
@@ -32,25 +33,32 @@ let learningSession = {
 let canvas, ctx;
 let isDrawing = false;
 
-// Inicjalizacja canvas
+// Inicjalizacja canvas i przycisku nauki
 window.addEventListener('DOMContentLoaded', () => {
+    // Canvas
     canvas = document.getElementById('drawing-canvas');
     if (canvas) {
         ctx = canvas.getContext('2d');
         ctx.lineWidth = 5;
         ctx.lineCap = 'round';
         ctx.strokeStyle = '#333';
-        
         // Obsługa rysowania
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseout', stopDrawing);
-        
         // Wsparcie dla touch
         canvas.addEventListener('touchstart', handleTouch);
         canvas.addEventListener('touchmove', handleTouch);
         canvas.addEventListener('touchend', stopDrawing);
+    }
+    // Przycisk nauki
+    const startBtn = document.getElementById('start-learning-btn');
+    if (startBtn) {
+        startBtn.addEventListener('click', function() {
+            const setId = this.getAttribute('data-set-id') || 1;
+            startLearningSession(setId);
+        });
     }
 });
 
