@@ -96,4 +96,32 @@ class CharacterRepository extends Repository {
             throw $e;
         }
     }
+    public function getUsersProgressBySets(int $userId): array {
+    $stmt = $this->database->connect()->prepare('
+        SELECT 
+            s.id, 
+            s.name as title,
+            COUNT(c.id) as total_count,
+            COUNT(up.character_id) FILTER (WHERE up.is_mastered = true) as mastered_count
+        FROM sets s
+        JOIN characters c ON s.id = c.set_id
+        LEFT JOIN user_progress up ON c.id = up.character_id AND up.user_id = :userId
+        GROUP BY s.id, s.name
+        HAVING COUNT(up.character_id) FILTER (WHERE up.view_count > 0) > 0
+    ');
+    
+    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Przeliczamy na procenty w PHP dla wygody widoku
+    foreach ($results as &$row) {
+        $row['progress'] = ($row['total_count'] > 0) 
+            ? round(($row['mastered_count'] / $row['total_count']) * 100) 
+            : 0;
+        $row['status'] = ($row['progress'] == 100) ? 'Ukończono' : 'W trakcie';
+    }
+
+    return $results;
+}
 }   

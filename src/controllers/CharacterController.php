@@ -41,5 +41,7 @@ class CharacterController {
                 'message' => 'Error updating progress: ' . $e->getMessage()
             ]);
         }
+        $activityRepo = new UserActivityRepository();
+        $activityRepo->logActivity($userId);
     }
 }
