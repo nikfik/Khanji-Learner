@@ -1,6 +1,7 @@
 <?php
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/CharacterController.php';
 class Routing{
 
     public static $routes=[
@@ -12,17 +13,29 @@ class Routing{
             'controller'=>"SecurityController",
             'action'=>'register'
         ],
-        'dashboard'=>[
-            'controller'=>"DashboardController",
-            'action'=>'index'
-        ],
-         'dashboardmain'=>[
-            'controller'=>"DashboardController",
-            'action'=>'index'
-        ],
         'characters'=>[
             'controller'=>"DashboardController",
             'action'=>'characters'
+        ],
+        'profile'=>[
+            'controller'=>"DashboardController",
+            'action'=>'profile'
+        ],
+          'dashboard'=>[
+            'controller'=>"DashboardController",
+            'action'=>'dashboard'
+        ],
+        'dashboardmain'=>[
+            'controller'=>"DashboardController",
+            'action'=>'dashboard'
+        ],
+        'api/learning/start'=>[
+            'controller'=>"CharacterController",
+            'action'=>'startLearning'
+        ],
+        'api/learning/finish'=>[
+            'controller'=>"CharacterController",
+            'action'=>'finishLearning'
         ]
     ];
 public static function run(string $path) {
@@ -32,6 +45,9 @@ public static function run(string $path) {
         case 'register':
         case 'login':
         case 'characters':
+        case 'profile':
+        case 'api/learning/start':
+        case 'api/learning/finish':
             $controller = new  Routing::$routes[$path]['controller'];//zmienic na singleton
             $action = Routing::$routes[$path]['action'];
             $controller->$action();

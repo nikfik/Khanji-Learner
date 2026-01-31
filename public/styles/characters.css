@@ -180,3 +180,234 @@ body {
     margin-top: 5px;
     color: #555;
 }
+
+/* Przycisk rozpoczęcia nauki */
+.start-learning-btn {
+    background: linear-gradient(135deg, #f39200 0%, #ff6b00 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(243, 146, 0, 0.3);
+}
+
+.start-learning-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(243, 146, 0, 0.4);
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Modal nauki */
+.learning-modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.learning-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.learning-header h3 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+}
+
+.progress-indicator {
+    background: #f5f5f5;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: #666;
+}
+
+#current-card {
+    color: #f39200;
+    font-size: 18px;
+}
+
+.learning-phase {
+    display: none;
+}
+
+.learning-phase.active {
+    display: block;
+}
+
+/* Faza pokazania */
+#show-phase {
+    text-align: center;
+}
+
+.stroke-display img {
+    width: 200px;
+    height: 200px;
+    margin: 20px 0;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.character-display h2 {
+    font-size: 80px;
+    color: #f39200;
+    margin: 20px 0 10px;
+}
+
+.romaji-text {
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Faza rysowania */
+#draw-phase {
+    text-align: center;
+}
+
+.canvas-container {
+    margin: 20px auto;
+    border: 3px solid #f39200;
+    border-radius: 12px;
+    display: inline-block;
+    background: #fafafa;
+    position: relative;
+}
+
+#drawing-canvas {
+    cursor: crosshair;
+    display: block;
+}
+
+.draw-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.draw-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Przyciski */
+.primary-btn {
+    background: #f39200;
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.primary-btn:hover {
+    background: #ff6b00;
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background: #fff;
+    color: #666;
+    border: 2px solid #ddd;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.secondary-btn:hover {
+    border-color: #f39200;
+    color: #f39200;
+}
+
+.success-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.success-btn:hover {
+    background: #45a049;
+}
+
+.warning-btn {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.warning-btn:hover {
+    background: #ff5252;
+}
+
+/* Ekran wyników */
+#results-phase {
+    text-align: center;
+}
+
+#results-phase h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.results-summary {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.results-summary p {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #555;
+}
+
+.stat-green {
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.stat-red {
+    color: #ff6b6b;
+    font-weight: bold;
+    font-size: 24px;
+}

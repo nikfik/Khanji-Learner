@@ -1,8 +1,8 @@
-
 <?php
 require_once 'AppController.php';
 require_once __DIR__.'/../repository/UserRepository.php';
 require_once __DIR__.'/../repository/CharacterRepository.php';
+require_once __DIR__.'/../repository/UserActivityRepository.php';   
 class DashboardController extends AppController{
     public function dashboard() {
     // W przyszłości te dane pobierzesz z bazy danych
@@ -20,10 +20,20 @@ public function characters() {
 
     $characterRepository = new CharacterRepository();
     $characters = $characterRepository->getCharactersBySet($setId, $userId);
-    
-    // Pobieramy nazwę zestawu dla nagłówka
-    // (Możesz dodać metodę getSetTitle w repozytorium)
-    $title = ($setId == 1) ? "Hiragana" : "Katakana"; 
+
+    // Dynamiczna nazwa alfabetu
+    $title = 'Alfabet';
+    switch ($setId) {
+        case 1:
+            $title = 'Hiragana';
+            break;
+        case 2:
+            $title = 'Katakana';
+            break;
+        case 3:
+            $title = 'Kanji';
+            break;
+    }
 
     $this->render('characters', [
         'title' => $title,
@@ -31,48 +41,26 @@ public function characters() {
     ]);
 }
     public function index() {
-    $cards = [
-    [
-        'id' => 1,
-        'title' => 'Ace of Spades',
-        'subtitle' => 'Legendary card',
-        'imageUrlPath' => 'https://deckofcardsapi.com/static/img/AS.png',
-        'href' => '/cards/ace-of-spades'
-    ],
-    [
-        'id' => 2,
-        'title' => 'Queen of Hearts',
-        'subtitle' => 'Classic romance',
-        'imageUrlPath' => 'https://deckofcardsapi.com/static/img/QH.png',
-        'href' => '/cards/queen-of-hearts'
-    ],
-    [
-        'id' => 3,
-        'title' => 'King of Clubs',
-        'subtitle' => 'Royal strength',
-        'imageUrlPath' => 'https://deckofcardsapi.com/static/img/KC.png',
-        'href' => '/cards/king-of-clubs'
-    ],
-    [
-        'id' => 4,
-        'title' => 'Jack of Diamonds',
-        'subtitle' => 'Sly and sharp',
-        'imageUrlPath' => 'https://deckofcardsapi.com/static/img/JD.png',
-        'href' => '/cards/jack-of-diamonds'
-    ],
-    [
-        'id' => 5,
-        'title' => 'Ten of Hearts',
-        'subtitle' => 'Lucky draw',
-        'imageUrlPath' => 'https://deckofcardsapi.com/static/img/0H.png',
-        'href' => '/cards/ten-of-hearts'
-    ],
-];
 
-    //$userRepository = new UserRepository();
-    //$users = $userRepository->getUsers();
+    $this->render('dashboard');
+}
 
-    //var_dump($users);
+public function profile() {
+    $userId = 1; // Docelowo z sesji
+    $charRepo = new CharacterRepository();
+    $activityRepo = new UserActivityRepository();
 
-return $this->render("dashboard", ['items' => $cards]);
-}}
+    $chapters = $charRepo->getUsersProgressBySets($userId);
+    //var_dump($chapters); 
+    //die();
+    $this->render('profile', [
+        'user' => ['name' => 'Kenji Tanaka', 'level' => 'N4 Master', 'joined' => 'Styczeń 2023'],
+        'stats' => [
+            'streak' => 15,
+            'mastered_count' => array_sum(array_column($chapters, 'mastered_count')),
+            'recent_activity' => $activityRepo->getRecentActivityCount($userId)
+        ],
+        'chapters' => $chapters
+    ]);
+}
+}

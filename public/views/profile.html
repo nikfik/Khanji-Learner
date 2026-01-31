@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - Kanji Master</title>
+    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+    <link rel="stylesheet" type="text/css" href="public/styles/profile.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="top-toolbar">
+            <div class="logo">Kanji Master</div>
+            <div class="nav-links">
+                <a href="/dashboard">Alfabety</a>
+                <a href="/dashboardmain">Zajęcia</a>
+                <a href="/profile" class="active">Profil</a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header class="profile-header">
+                <h1>Twój Profil</h1>
+                <p>Śledź swoje postępy w nauce.</p>
+            </header>
+
+            <section class="user-card">
+                <div class="user-avatar"><?php echo substr($user['name'], 0, 2); ?></div>
+                <div class="user-info">
+                    <h2><?php echo $user['name']; ?></h2>
+                    <p>Dołączył: <?php echo $user['joined']; ?></p>
+                    <span class="badge"><?php echo $user['level']; ?></span>
+                </div>
+            </section>
+
+            <section class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-value"><?php echo $stats['streak']; ?></span>
+                    <span class="stat-label">Dni z rzędu</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value"><?php echo $stats['mastered_count']; ?></span>
+                    <span class="stat-label">Opanowane Kanji</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value"><?php echo $stats['recent_activity']; ?>/14</span>
+                    <span class="stat-label">Dni aktywności (2 tyg.)</span>
+                </div>
+            </section>
+
+            <section class="progress-section">
+                <h3>Postępy w rozdziałach</h3>
+                <div class="chapters-list">
+                    <?php if (isset($chapters) && !empty($chapters)): ?>
+                        <?php foreach($chapters as $ch): ?>
+                            <div class="chapter-item">
+                                <div class="chapter-details">
+                                    <span class="chapter-title"><?php echo $ch['title']; ?></span>
+                                    <span class="chapter-status"><?php echo $ch['status']; ?></span>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill" style="width: <?php echo (int)$ch['progress']; ?>%"></div>
+                                    </div>
+                                    <span class="progress-percent"><?php echo (int)$ch['progress']; ?>%</span>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="no-data">Nie zacząłeś jeszcze żadnego rozdziału. Czas na naukę!</p>
+                    <?php endif; ?>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</body>
+</html>
