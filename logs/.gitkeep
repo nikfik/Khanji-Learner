@@ -1,0 +1,2 @@
+# Ten plik zapewnia, że katalog logs jest śledzony przez Git
+# ale pliki logów (.log) są ignorowane przez .gitignore

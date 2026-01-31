@@ -9,25 +9,44 @@
 <body>
     <div class="login-container">
         <div class="header">
-            <img src="path/to/your/icon.png" alt="Kanji Master Logo" class="app-logo"> <h1>Witaj z powrotem</h1> </div>
+            <h1>Witaj z powrotem</h1>
+        </div>
 
-        <form action="login_process.php" method="POST">
-            <div class="input-group">
-                <label for="username">Nazwa użytkownika / E-mail</label> <input type="text" id="username" name="username" placeholder="Wprowadź nazwę użytkownika lub e-mail" required> </div>
+        <?php if (!empty($message)): ?>
+            <!-- WYTYCZNA #19: Dane wyświetlane w widokach są escapowane (escapowanie już w AppController) -->
+            <div class="message" style="padding: 10px; margin-bottom: 15px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
+                <?= $message ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- WYTYCZNA #6: Metoda login przyjmuje dane tylko na POST -->
+        <form action="/login" method="POST">
+            <!-- WYTYCZNA #7: CSRF token w formularzu logowania -->
+            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?? '' ?>">
 
             <div class="input-group">
-                <label for="password">Hasło</label> <div class="password-wrapper">
-                    <input type="password" id="password" name="password" placeholder="Wprowadź swoje hasło" required> <span class="eye-icon">👁️</span>
+                <!-- WYTYCZNA #3: Walidacja formatu email po stronie serwera (dodatkowo type="email" po stronie klienta) -->
+                <label for="email">E-mail</label>
+                <!-- WYTYCZNA #9: Ograniczam długość wejścia (maxlength="255") -->
+                <input type="email" id="email" name="email" placeholder="Wprowadź swój e-mail" required maxlength="255" autocomplete="email">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Hasło</label>
+                <div class="password-wrapper">
+                    <!-- WYTYCZNA #9: Ograniczam długość wejścia (maxlength="255") -->
+                    <!-- WYTYCZNA #22: Hasło nie jest przekazywane do widoków (używamy type="password") -->
+                    <input type="password" id="password" name="password" placeholder="Wprowadź swoje hasło" required maxlength="255" autocomplete="current-password">
+                    <span class="eye-icon">👁️</span>
                 </div>
             </div>
 
-            <div class="forgot-password">
-                <a href="#">Nie pamiętasz hasła?</a> </div>
-
-            <button type="submit" class="btn-login">Zaloguj się</button> </form>
+            <button type="submit" class="btn-login">Zaloguj się</button>
+        </form>
 
         <div class="register-link">
-            Nie masz konta? <a href="register.php">Zarejestruj się</a> </div>
+            Nie masz konta? <a href="/register">Zarejestruj się</a>
+        </div>
     </div>
 </body>
 </html>

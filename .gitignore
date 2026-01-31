@@ -1,0 +1,23 @@
+# Logi
+logs/*.log
+
+# Pliki środowiskowe
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Composer
+vendor/
+
+# Tymczasowe pliki PHP
+*.cache
+*.tmp

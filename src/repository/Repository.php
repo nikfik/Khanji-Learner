@@ -7,6 +7,11 @@ class Repository {
 
     public function __construct()
     {
-        $this->database = new Database();
+        // WYTYCZNA #4: Używamy singletonu Database
+        $this->database = Database::getInstance();
+    }
+    
+    protected function getConnection(): PDO {
+        return $this->database->getConnection();
     }
 }
