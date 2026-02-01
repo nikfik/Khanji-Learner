@@ -1,5 +1,4 @@
 <?php
-
 class CSRFToken {
     private const TOKEN_NAME = 'csrf_token';
     private const TOKEN_TIME_NAME = 'csrf_token_time';

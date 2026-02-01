@@ -1,5 +1,4 @@
 <?php
-
 class SecurityLogger {
     private const LOG_FILE = __DIR__ . '/../../logs/security.log';
     private const MAX_LOG_SIZE = 10485760; // 10MB

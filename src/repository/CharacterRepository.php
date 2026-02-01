@@ -1,5 +1,4 @@
 <?php
-
 require_once 'Repository.php';
 //require_once __DIR__.'/../models/Character.php'; // Zakładam, że stworzysz prosty model
 
@@ -8,7 +7,9 @@ class CharacterRepository extends Repository {
     public function getCharactersBySet(int $setId, int $userId): array {
         $result = [];
 
-        $stmt = $this->database->connect()->prepare('
+        // WYTYCZNA #1: Prepared statements / ochrona SQL injection
+        // Używamy getConnection() zamiast $this->database->connect()
+        $stmt = $this->getConnection()->prepare('
             SELECT c.*, COALESCE(up.view_count, 0) as view_count, COALESCE(up.is_mastered, false) as is_mastered
             FROM characters c
             LEFT JOIN user_progress up ON c.id = up.character_id AND up.user_id = :userId
@@ -23,7 +24,8 @@ class CharacterRepository extends Repository {
     }
 
     public function incrementViewCount(int $userId, int $character_id) {
-        $stmt = $this->database->connect()->prepare('
+        // WYTYCZNA #1: Prepared statements / ochrona SQL injection
+        $stmt = $this->getConnection()->prepare('
             INSERT INTO user_progress (user_id, character_id, view_count)
             VALUES (:userId, :charId, 1)
             ON CONFLICT (user_id, character_id)
@@ -37,7 +39,8 @@ class CharacterRepository extends Repository {
         $stmt->execute();
     }
     public function getRandomCharactersForStudy(int $setId, int $limit = 15): array {
-    $stmt = $this->database->connect()->prepare('
+    // WYTYCZNA #1: Prepared statements / ochrona SQL injection
+    $stmt = $this->getConnection()->prepare('
         SELECT * FROM characters 
         WHERE set_id = :setId 
         ORDER BY RANDOM() 

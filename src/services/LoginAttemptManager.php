@@ -1,5 +1,4 @@
 <?php
-
 class LoginAttemptManager {
     private const MAX_ATTEMPTS = 5;
     private const LOCKOUT_TIME = 900; // 15 minut w sekundach
