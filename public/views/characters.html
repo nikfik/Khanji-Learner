@@ -73,16 +73,18 @@
         </div>
         
         <div class="learning-body">
-            <!-- Strona 1: Pokazanie znaku -->
+            <!-- Strona 1: Pokazanie tylko romaji - użytkownik musi narysować -->
             <div id="show-phase" class="learning-phase active">
-                <div class="stroke-display">
-                    <img id="learning-stroke-img" src="" alt="Stroke Order">
+                <div class="learning-instruction">
+                    <p style="color: #999; font-size: 14px; margin: 20px 0;">Narysuj znak na podstawie romaji:</p>
+                    <p class="romaji-text" id="learning-romaji" style="font-size: 48px; margin: 30px 0;">a</p>
+                    <button class="secondary-btn" onclick="revealCharacter()">👁️ Podpowiedź - pokaż znak</button>
+                    <div id="hint-char" style="display: none; margin-top: 20px;">
+                        <img id="learning-stroke-img-hint" src="" alt="Stroke Order" style="width: 150px; height: 150px; margin-bottom: 10px;">
+                        <h2 id="learning-char-hint">あ</h2>
+                    </div>
                 </div>
-                <div class="character-display">
-                    <h2 id="learning-char">あ</h2>
-                    <p class="romaji-text" id="learning-romaji">a</p>
-                </div>
-                <button class="primary-btn" onclick="switchToDrawPhase()">Zacznij rysować →</button>
+                <button class="primary-btn" onclick="switchToDrawPhase()" style="margin-top: 20px;">Teraz narysuj →</button>
             </div>
             
             <!-- Strona 2: Rysowanie -->

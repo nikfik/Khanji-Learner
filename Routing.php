@@ -36,6 +36,10 @@ class Routing{
         'api/learning/finish'=>[
             'controller'=>"CharacterController",
             'action'=>'finishLearning'
+        ],
+        'api/learning/saveDrawing'=>[
+            'controller'=>"CharacterController",
+            'action'=>'saveDrawing'
         ]
     ];
     

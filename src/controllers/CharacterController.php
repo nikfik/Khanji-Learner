@@ -44,4 +44,42 @@ class CharacterController {
         $activityRepo = new UserActivityRepository();
         $activityRepo->logActivity($userId);
     }
+
+    // API: Zapisz rysunek użytkownika
+    public function saveDrawing() {
+        header('Content-Type: application/json');
+        $userId = $_SESSION['user_id'] ?? 1;
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        $characterId = $input['character_id'] ?? null;
+        $romaji = $input['romaji'] ?? null;
+        $drawingData = $input['drawing_data'] ?? null;  // base64 encoded image
+        $sessionId = $input['session_id'] ?? null;
+        
+        if (!$characterId || !$drawingData) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Missing required fields'
+            ]);
+            return;
+        }
+        
+        try {
+            // Konwertuj base64 na binary
+            $binaryData = base64_decode(str_replace('data:image/png;base64,', '', $drawingData));
+            
+            $characterRepository = new CharacterRepository();
+            $characterRepository->saveDrawing($userId, $characterId, $romaji, $binaryData, $sessionId);
+            
+            echo json_encode([
+                'success' => true,
+                'message' => 'Drawing saved successfully'
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error saving drawing: ' . $e->getMessage()
+            ]);
+        }
+    }
 }

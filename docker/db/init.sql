@@ -61,6 +61,20 @@ CREATE TABLE IF NOT EXISTS user_activity (
 
 CREATE INDEX IF NOT EXISTS idx_user_activity_user_id ON user_activity(user_id);
 
+-- 6. Tabela Rysunków Użytkownika (do zapisywania rysunków ze sesji nauki)
+CREATE TABLE IF NOT EXISTS user_drawings (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    session_id VARCHAR(50),
+    character_id INT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    romaji VARCHAR(20),
+    drawing_data BYTEA,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_drawings_user_id ON user_drawings(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_drawings_session_id ON user_drawings(session_id);
+
 -- Przykładowe kategorie
 INSERT INTO categories (name, level, description) VALUES
 ('Hiragana', 1, 'Alfabet Hiragana'),
