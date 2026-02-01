@@ -1,23 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Kanji Master - Rejestracja</title>
     <link rel="stylesheet" type="text/css" href="public/styles/main.css">
     <link rel="stylesheet" type="text/css" href="public/styles/login.css">
 </head>
 <body>
-    <form actuib="\login" method="POST">
-        <h1>REGISTER PANEL</h1> 
-        <input name="email:" type="email" placeholder="twój email">
-        <input name="passowrd" type="password" placeholder="Podaj hasło">
-        <input name="passowrd" type="password" placeholder="Podaj hasło ponownie">
+    <div class="login-container">
+        <h1>PANEL REJESTRACJI</h1>
 
-        <input name="passowrd" type="password" placeholder="imie">
-        <input name="passowrd" type="password" placeholder="nazwisko">
+        <?php if (!empty($message)): ?>
+            <!-- WYTYCZNA #19: Dane wyświetlane w widokach są escapowane -->
+            <div class="message" style="padding: 10px; margin-bottom: 15px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
+                <?= $message ?>
+            </div>
+        <?php endif; ?>
 
-        <button type="submit">REGISTER</button>
-    </form>
+        <!-- WYTYCZNA #6: Metoda register przyjmuje dane tylko na POST -->
+        <form action="/register" method="POST">
+            <!-- WYTYCZNA #8: CSRF token w formularzu rejestracji -->
+            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?? '' ?>">
+
+            <!-- WYTYCZNA #3: Walidacja formatu email po stronie serwera (type="email" dodatkowo po stronie klienta) -->
+            <!-- WYTYCZNA #9: Ograniczam długość wejścia (maxlength) -->
+            <input name="email" type="email" placeholder="Twój email" required maxlength="255" autocomplete="email">
+
+            <!-- WYTYCZNA #17: Waliduję złożoność hasła (min. długość - pattern) -->
+            <!-- WYTYCZNA #22: Hasło nie jest przekazywane do widoków (type="password") -->
+            <input name="password" type="password" placeholder="Podaj hasło (min. 8 znaków, wielka/mała litera i cyfra)" required minlength="8" maxlength="255" autocomplete="new-password">
+
+            <input name="password_confirm" type="password" placeholder="Podaj hasło ponownie" required minlength="8" maxlength="255" autocomplete="new-password">
+
+            <!-- WYTYCZNA #9: Ograniczam długość wejścia (imię, nazwisko) -->
+            <input name="name" type="text" placeholder="Imię" required maxlength="100" autocomplete="given-name">
+
+            <input name="surname" type="text" placeholder="Nazwisko" required maxlength="100" autocomplete="family-name">
+
+            <button type="submit">ZAREJESTRUJ SIĘ</button>
+        </form>
+
+        <div class="register-link" style="margin-top: 15px;">
+            Masz już konto? <a href="/login">Zaloguj się</a>
+        </div>
+    </div>
 </body>
 </html>

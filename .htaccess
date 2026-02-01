@@ -1,0 +1,43 @@
+# WYTYCZNA #5: Logowanie i rejestracja dostępne tylko przez HTTPS
+# Przekieruj wszystkie żądania HTTP na HTTPS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# WYTYCZNA #20: W produkcji nie pokazuję stack trace / surowych błędów użytkownikowi
+# Wyłącz wyświetlanie błędów PHP w przeglądarce (w produkcji)
+php_flag display_errors Off
+php_flag display_startup_errors Off
+
+# WYTYCZNA #13, #14, #15: Bezpieczne ciasteczka sesyjne
+php_flag session.cookie_httponly On
+php_flag session.cookie_secure On
+php_value session.cookie_samesite Strict
+
+# Dodatkowe zabezpieczenia
+<IfModule mod_headers.c>
+    # Zapobieganie clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # Zapobieganie MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Content Security Policy (dostosuj według potrzeb)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
+</IfModule>
+
+# Blokuj dostęp do wrażliwych plików
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "(config\.php|Database\.php|\.sql|\.log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

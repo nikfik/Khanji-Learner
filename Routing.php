@@ -38,23 +38,28 @@ class Routing{
             'action'=>'finishLearning'
         ]
     ];
+    
 public static function run(string $path) {
-    switch($path){//regex aby przetworzyc np dashboard/5467 
+    switch($path){
         case 'dashboardmain':
         case 'dashboard':
         case 'register':
         case 'login':
+        case 'logout':
         case 'characters':
         case 'profile':
         case 'api/learning/start':
         case 'api/learning/finish':
             $controller = new  Routing::$routes[$path]['controller'];//zmienic na singleton
             $action = Routing::$routes[$path]['action'];
+            $controller = new $controllerName();
             $controller->$action();
             break;
         default:
-        include 'public/views/404.html';
-        break;
+            // WYTYCZNA #21: Zwracam sensowne kody HTTP
+            http_response_code(404);
+            include 'public/views/404.html';
+            break;
     }
 }
 }
