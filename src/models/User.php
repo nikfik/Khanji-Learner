@@ -1,6 +1,7 @@
 <?php
 class User {
     private $id;
+    private $username;
     private $email;
     private $password_hash;
     private $name;
@@ -10,6 +11,7 @@ class User {
 
     public function __construct(
         ?int $id = null,
+        string $username = '',
         string $email = '',
         string $password_hash = '',
         string $name = '',
@@ -18,6 +20,7 @@ class User {
         ?string $last_login = null
     ) {
         $this->id = $id;
+        $this->username = $username;
         $this->email = $email;
         $this->password_hash = $password_hash;
         $this->name = $name;
@@ -29,6 +32,10 @@ class User {
     // Getters
     public function getId(): ?int {
         return $this->id;
+    }
+
+    public function getUsername(): string {
+        return $this->username;
     }
 
     public function getEmail(): string {
@@ -63,6 +70,7 @@ class User {
     public function getBasicInfo(): array {
         return [
             'id' => $this->id,
+            'username' => $this->username,
             'email' => $this->email,
             'name' => $this->name,
             'surname' => $this->surname

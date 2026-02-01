@@ -42,19 +42,25 @@ class UserRepository extends Repository
 
     // WYTYCZNA #1: Ochrona przed SQL injection (prepared statements)
     // WYTYCZNA #10: Hasła przechowywane jako hash (bcrypt/Argon2, password_hash)
-    public function createUser(string $email, string $password, string $name, string $surname): bool {
+    public function createUser(string $email, string $password, string $name, string $surname, string $username = ''): bool {
         try {
+            // Jeśli username nie podany, użyj części emaila
+            if (empty($username)) {
+                $username = explode('@', $email)[0];
+            }
+            
             // WYTYCZNA #10: Używamy password_hash z bcrypt
             $passwordHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 
             // WYTYCZNA #1: Prepared statement
             $stmt = $this->getConnection()->prepare('
-                INSERT INTO users (email, password_hash, name, surname, created_at)
-                VALUES (:email, :password_hash, :name, :surname, NOW())
+                INSERT INTO users (username, email, password, name, surname, created_at)
+                VALUES (:username, :email, :password, :name, :surname, NOW())
             ');
 
+            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':password_hash', $passwordHash, PDO::PARAM_STR);
+            $stmt->bindParam(':password', $passwordHash, PDO::PARAM_STR);
             $stmt->bindParam(':name', $name, PDO::PARAM_STR);
             $stmt->bindParam(':surname', $surname, PDO::PARAM_STR);
 
@@ -72,7 +78,7 @@ class UserRepository extends Repository
     public function getUserByEmail(string $email): ?User {
         // WYTYCZNA #1: Prepared statement
         $stmt = $this->getConnection()->prepare('
-            SELECT id, email, password_hash, name, surname, created_at, last_login
+            SELECT id, username, email, password, name, surname, created_at, last_login
             FROM users 
             WHERE email = :email
         ');
@@ -89,8 +95,9 @@ class UserRepository extends Repository
         // WYTYCZNA #23: Zwracamy tylko potrzebne dane
         return new User(
             $userData['id'],
+            $userData['username'],
             $userData['email'],
-            $userData['password_hash'],
+            $userData['password'],
             $userData['name'],
             $userData['surname'],
             $userData['created_at'],

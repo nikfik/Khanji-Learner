@@ -50,7 +50,7 @@ public static function run(string $path) {
         case 'profile':
         case 'api/learning/start':
         case 'api/learning/finish':
-            $controller = new  Routing::$routes[$path]['controller'];//zmienic na singleton
+            $controllerName = Routing::$routes[$path]['controller'];
             $action = Routing::$routes[$path]['action'];
             $controller = new $controllerName();
             $controller->$action();

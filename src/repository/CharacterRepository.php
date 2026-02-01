@@ -14,7 +14,7 @@ class CharacterRepository extends Repository {
             FROM characters c
             LEFT JOIN user_progress up ON c.id = up.character_id AND up.user_id = :userId
             WHERE c.set_id = :setId
-            ORDER BY c.order_number ASC
+            ORDER BY c.place_order ASC
         ');
         $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
@@ -26,8 +26,12 @@ class CharacterRepository extends Repository {
     public function incrementViewCount(int $userId, int $character_id) {
         // WYTYCZNA #1: Prepared statements / ochrona SQL injection
         $stmt = $this->getConnection()->prepare('
-            INSERT INTO user_progress (user_id, character_id, view_count)
-            VALUES (:userId, :charId, 1)
+            INSERT INTO user_progress (user_id, character_id, view_count, last_practiced)
+            VALUES (:userId, :charId, 1, NOW())
+            ON CONFLICT (user_id, character_id) DO UPDATE SET
+                view_count = view_count + 1,
+                last_practiced = NOW(),
+                is_mastered = CASE WHEN view_count + 1 >= 10 THEN TRUE ELSE FALSE END
             ON CONFLICT (user_id, character_id)
             DO UPDATE SET 
                 view_count = user_progress.view_count + 1,
@@ -47,7 +51,8 @@ class CharacterRepository extends Repository {
         LIMIT :limit
     ');
     
-    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
