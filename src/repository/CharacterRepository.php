@@ -73,7 +73,9 @@ class CharacterRepository extends Repository {
     // Pobierz ostatnie rysunki użytkownika
     public function getUserDrawings(int $userId, int $limit = 10): array {
         $stmt = $this->getConnection()->prepare('
-            SELECT ud.*, c.symbol, c.romaji as character_romaji
+            SELECT ud.id, ud.user_id, ud.session_id, ud.character_id, ud.romaji, 
+                   encode(ud.drawing_data, \'base64\') as drawing_data,
+                   ud.created_at, c.symbol, c.romaji as character_romaji
             FROM user_drawings ud
             JOIN characters c ON ud.character_id = c.id
             WHERE ud.user_id = :userId
@@ -88,27 +90,18 @@ class CharacterRepository extends Repository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getRandomCharactersForStudy(int $setId, int $limit = 15): array {
-    // WYTYCZNA #1: Prepared statements / ochrona SQL injection
-    $stmt = $this->getConnection()->prepare('
-        SELECT * FROM characters 
-        WHERE set_id = :setId 
-        ORDER BY RANDOM() 
-        LIMIT :limit
-    ');
-    
-    $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Przeliczamy na procenty w PHP dla wygody widoku
-    foreach ($results as &$row) {
-        $row['progress'] = ($row['total_count'] > 0) 
-            ? round(($row['mastered_count'] / $row['total_count']) * 100) 
-            : 0;
-        $row['status'] = ($row['progress'] == 100) ? 'Ukończono' : 'W trakcie';
+        // WYTYCZNA #1: Prepared statements / ochrona SQL injection
+        $stmt = $this->getConnection()->prepare('
+            SELECT * FROM characters 
+            WHERE set_id = :setId 
+            ORDER BY RANDOM() 
+            LIMIT :limit
+        ');
+        
+        $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    return $results;
-}
 }   

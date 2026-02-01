@@ -40,6 +40,10 @@ class Routing{
         'api/learning/saveDrawing'=>[
             'controller'=>"CharacterController",
             'action'=>'saveDrawing'
+        ],
+        'api/profile/update'=>[
+            'controller'=>"DashboardController",
+            'action'=>'updateProfile'
         ]
     ];
     
@@ -54,6 +58,8 @@ public static function run(string $path) {
         case 'profile':
         case 'api/learning/start':
         case 'api/learning/finish':
+        case 'api/learning/saveDrawing':
+        case 'api/profile/update':
             $controllerName = Routing::$routes[$path]['controller'];
             $action = Routing::$routes[$path]['action'];
             $controller = new $controllerName();

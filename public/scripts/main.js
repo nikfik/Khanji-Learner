@@ -27,7 +27,8 @@ let learningSession = {
     characters: [],
     currentIndex: 0,
     results: [],
-    setId: null
+    setId: null,
+    sessionId: null  // Unikalny ID dla każdej sesji nauki
 };
 
 let canvas, ctx;
@@ -106,6 +107,8 @@ async function startLearningSession(setId) {
             learningSession.currentIndex = 0;
             learningSession.results = [];
             learningSession.setId = setId;
+            // Generuj unikalny session_id na START sesji
+            learningSession.sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
             document.getElementById('learning-modal').style.display = 'flex';
             document.getElementById('total-cards').textContent = data.characters.length;
@@ -196,7 +199,6 @@ function saveDrawingToServer() {
     if (!canvas || !char) return;
     
     const drawingData = canvas.toDataURL('image/png');
-    const sessionId = 'session_' + Date.now();  // Prosty ID sesji
     
     fetch('/api/learning/saveDrawing', {
         method: 'POST',
@@ -207,7 +209,7 @@ function saveDrawingToServer() {
             character_id: char.id,
             romaji: char.romaji,
             drawing_data: drawingData,
-            session_id: sessionId
+            session_id: learningSession.sessionId  // Użyj tego samego session_id dla wszystkich rysunków
         })
     }).catch(error => {
         console.error('Error saving drawing:', error);

@@ -6,6 +6,7 @@ class User {
     private $password_hash;
     private $name;
     private $surname;
+    private $bio;
     private $created_at;
     private $last_login;
 
@@ -16,6 +17,7 @@ class User {
         string $password_hash = '',
         string $name = '',
         string $surname = '',
+        ?string $bio = null,
         ?string $created_at = null,
         ?string $last_login = null
     ) {
@@ -25,6 +27,7 @@ class User {
         $this->password_hash = $password_hash;
         $this->name = $name;
         $this->surname = $surname;
+        $this->bio = $bio;
         $this->created_at = $created_at;
         $this->last_login = $last_login;
     }
@@ -55,6 +58,10 @@ class User {
 
     public function getSurname(): string {
         return $this->surname;
+    }
+
+    public function getBio(): ?string {
+        return $this->bio;
     }
 
     public function getCreatedAt(): ?string {

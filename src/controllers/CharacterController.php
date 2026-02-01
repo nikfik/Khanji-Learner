@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/../repository/CharacterRepository.php';
+require_once __DIR__.'/../repository/UserActivityRepository.php';
 
 class CharacterController {
     // API: Rozpocznij sesję nauki
