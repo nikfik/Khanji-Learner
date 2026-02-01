@@ -46,10 +46,19 @@ class CharacterRepository extends Repository {
         ORDER BY RANDOM() 
         LIMIT :limit
     ');
-    $stmt->bindParam(':setId', $setId, PDO::PARAM_INT);
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    
+    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
     $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Przeliczamy na procenty w PHP dla wygody widoku
+    foreach ($results as &$row) {
+        $row['progress'] = ($row['total_count'] > 0) 
+            ? round(($row['mastered_count'] / $row['total_count']) * 100) 
+            : 0;
+        $row['status'] = ($row['progress'] == 100) ? 'Ukończono' : 'W trakcie';
+    }
+
+    return $results;
 }
 }   
