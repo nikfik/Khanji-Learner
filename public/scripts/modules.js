@@ -73,29 +73,3 @@ function initializeModules() {
     // Inicjalne filtrowanie (może być przydatne jeśli są parametry URL)
     filterModules();
 }
-
-// Funkcja do rozpoczęcia modułu
-function startModule(moduleId) {
-    // TODO: Przekierowanie do sesji nauki dla danego modułu
-    // Na razie pokazujemy alert
-    console.log('Starting module:', moduleId);
-    
-    // W przyszłości można dodać przekierowanie do:
-    // window.location.href = '/learning?module=' + moduleId;
-    
-    alert('Funkcja rozpoczęcia modułu ' + moduleId + ' będzie wkrótce dostępna!');
-}
-
-// Pomocnicza funkcja do debugowania
-function logModuleStats() {
-    const cards = document.querySelectorAll('.module-card');
-    console.log('Total modules:', cards.length);
-    
-    const levels = {};
-    cards.forEach(card => {
-        const level = card.getAttribute('data-level');
-        levels[level] = (levels[level] || 0) + 1;
-    });
-    
-    console.log('Modules by level:', levels);
-}
