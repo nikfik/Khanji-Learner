@@ -98,6 +98,14 @@ function clearCanvas() {
 
 // Rozpocznij sesję nauki
 async function startLearningSession(setId) {
+    // Sprawdź czy użytkownik jest zalogowany (sprawdź czy toolbar pokazuje user-profile)
+    const userProfile = document.querySelector('.user-profile');
+    if (!userProfile || !userProfile.querySelector('.profile-avatar')) {
+        alert('Musisz być zalogowany, aby rozpocząć naukę. Zaloguj się lub zarejestruj.');
+        window.location.href = '/login';
+        return;
+    }
+    
     try {
         const response = await fetch(`/api/learning/start?setId=${setId}`);
         const data = await response.json();

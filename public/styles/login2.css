@@ -46,7 +46,7 @@ h1 {
     color: #333;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="email"], input[type="password"] {
     width: 100%;
     padding: 12px;
     border: 1px solid #eee;

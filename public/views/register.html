@@ -62,5 +62,19 @@
             Masz już konto? <a href="/login">Zaloguj się</a>
         </div>
     </div>
+    
+    <script>
+        // Pokaż/ukryj hasło
+        document.querySelector('.eye-icon').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+    </script>
 </body>
 </html>

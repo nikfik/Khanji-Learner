@@ -27,6 +27,10 @@
                 ?>" alt="Profile" class="profile-avatar" title="<?php echo $currentUser['username'] ?? 'Profil'; ?>">
                 <a href="/logout" class="logout-btn">Wyloguj</a>
             </div>
+            <?php else: ?>
+            <div class="user-profile">
+                <a href="/login" class="logout-btn">Zaloguj się</a>
+            </div>
             <?php endif; ?>
         </nav>
 

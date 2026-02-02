@@ -95,8 +95,8 @@ class DashboardController extends AppController{
         // Ilość sesji nauki
         $sessionsCount = $this->getSessionsCount($userId);
         
-        // Ostatnie rysunki (6 ostatnich)
-        $recentDrawings = $characterRepository->getUserDrawings($userId, 6);
+        // Pobierz wszystkie rysunki użytkownika do wyświetlenia w galerii (pogrupowane po sesji)
+        $recentDrawings = $characterRepository->getUserDrawings($userId, 1000, 0);
 
         $userProfile = [
             'id' => $user->getId(),
@@ -275,13 +275,11 @@ class DashboardController extends AppController{
 
         $userId = $_SESSION['user_id'];
         $offset = (int)($_GET['offset'] ?? 0);
-        $limit = 5; // Pobieraj 5 więcej sesji
 
         try {
             $characterRepository = new CharacterRepository();
-            $drawings = $characterRepository->getUserDrawings($userId, $offset + $limit, 0);
             
-            // Pobierz rysunki z offsetem (od sesji 4 dalej)
+            // Pobierz wszystkie rysunki użytkownika
             $allDrawings = $characterRepository->getUserDrawings($userId, 1000, 0);
             
             // Grupuj po session_id
@@ -294,13 +292,16 @@ class DashboardController extends AppController{
                 $sessions[$sessionId][] = $drawing;
             }
             
-            // Pobierz sesje z offsetem
-            $sessionsList = array_slice($sessions, $offset + 3, 5);
+            // Pobierz 5 następnych sesji zaczynając od offset
+            $sessionsList = array_slice($sessions, $offset, 5, true);
+            
+            // Sprawdź czy są jeszcze sesje do załadowania
+            $hasMore = count($sessions) > ($offset + 5);
             
             echo json_encode([
                 'success' => true,
                 'sessions' => $sessionsList,
-                'hasMore' => count($sessions) > ($offset + 8)
+                'hasMore' => $hasMore
             ]);
         } catch (Exception $e) {
             echo json_encode([

@@ -115,10 +115,10 @@
                     </div>
                         
                     <?php if ($totalSessions > 3): ?>
-                        <button class="expand-btn" id="load-more-btn" onclick="loadMoreSessions(3)">
+                        <button class="expand-btn" id="load-more-btn" data-current-offset="3" onclick="loadMoreSessions()">
                             <span id="expand-text">Załaduj 5 więcej sesji</span>
-                            </button>
-                        <?php endif; ?>
+                        </button>
+                    <?php endif; ?>
                     </div>
                 <?php else: ?>
                     <p class="no-data">Nie masz jeszcze żadnych sesji nauki. Zacznij naukę znaków!</p>
@@ -191,9 +191,12 @@
 
     <script>
         // Załaduj więcej sesji
-        async function loadMoreSessions(offset) {
+        async function loadMoreSessions() {
+            const btn = document.getElementById('load-more-btn');
+            const currentOffset = parseInt(btn.getAttribute('data-current-offset')) || 3;
+            
             try {
-                const response = await fetch(`/api/profile/getMoreSessions?offset=${offset}`);
+                const response = await fetch(`/api/profile/getMoreSessions?offset=${currentOffset}`);
                 const data = await response.json();
                 
                 if (data.success) {
@@ -228,10 +231,11 @@
                         container.appendChild(sessionDiv);
                     }
                     
-                    // Ukryj przycisk lub zmień tekst
-                    const btn = document.getElementById('load-more-btn');
+                    // Aktualizuj offset i przycisk
+                    const newOffset = currentOffset + 5;
+                    btn.setAttribute('data-current-offset', newOffset);
+                    
                     if (data.hasMore) {
-                        btn.onclick = () => loadMoreSessions(offset + 5);
                         btn.innerHTML = '<span id="expand-text">Załaduj 5 więcej sesji</span>';
                     } else {
                         btn.style.display = 'none';
