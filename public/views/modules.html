@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanji Master - Dostępne zajęcia</title>
+    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+    <link rel="stylesheet" type="text/css" href="public/styles/modules.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="top-toolbar">
+            <div class="logo">Kanji Master</div>
+            <div class="nav-links">
+                <a href="/dashboard">Alfabety</a>
+                <a href="/modules" class="active">Zajęcia</a>
+                <a href="/profile">Profil</a>
+            </div>
+            <div class="user-profile">
+                <img src="https://ui-avatars.com/api/?name=User&background=f39200&color=fff" alt="Profile" class="profile-avatar">
+            </div>
+        </nav>
+
+        <main class="modules-content">
+            <header class="modules-header">
+                <h1>Dostępne zajęcia</h1>
+                <p>Wybierz moduł i kontynuuj swoją naukę kanji</p>
+            </header>
+
+            <!-- Wyszukiwarka -->
+            <div class="search-container">
+                <input type="text" id="moduleSearch" class="search-input" placeholder="🔍 Wyszukaj rozdział...">
+            </div>
+
+            <!-- Filtry poziomów trudności -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-level="all">Wszystko</button>
+                <button class="filter-tab" data-level="A1">A1</button>
+                <button class="filter-tab" data-level="A2">A2</button>
+                <button class="filter-tab" data-level="B1">B1</button>
+                <button class="filter-tab" data-level="B2">B2</button>
+                <button class="filter-tab" data-level="C1">C1</button>
+                <button class="filter-tab" data-level="C2">C2</button>
+            </div>
+
+            <!-- Siatka modułów -->
+            <div class="modules-grid" id="modulesGrid">
+                <?php if (isset($modules) && !empty($modules)): ?>
+                    <?php 
+                    $gradients = [
+                        'linear-gradient(135deg, #f39200 0%, #ffd140 100%)',
+                        'linear-gradient(135deg, #667eea 0%, #f093fb 100%)',
+                        'linear-gradient(135deg, #3eab6f 0%, #7ce4b0 100%)',
+                        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                        'linear-gradient(135deg, #ff6b6b 0%, #ffa06b 100%)',
+                        'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+                    ];
+                    $gradientIndex = 0;
+                    ?>
+                    <?php foreach ($modules as $module): ?>
+                        <div class="module-card" 
+                             data-level="<?php echo htmlspecialchars($module['level']); ?>"
+                             data-name="<?php echo htmlspecialchars(strtolower($module['name'])); ?>">
+                            <div class="module-card-gradient" style="background: <?php echo $gradients[$gradientIndex % count($gradients)]; ?>"></div>
+                            
+                            <div class="module-card-content">
+                                <div class="module-level-badge"><?php echo htmlspecialchars($module['level']); ?></div>
+                                
+                                <h3 class="module-title"><?php echo htmlspecialchars($module['name']); ?></h3>
+                                <p class="module-description"><?php echo htmlspecialchars($module['description']); ?></p>
+                                
+                                <div class="module-stats">
+                                    <span class="stat-item">
+                                        📝 <?php echo htmlspecialchars($module['character_count']); ?> Kanji do opanowania
+                                    </span>
+                                </div>
+                                
+                                <div class="progress-section">
+                                    <div class="progress-header">
+                                        <span class="progress-label">Postęp</span>
+                                        <span class="progress-percentage"><?php echo isset($module['progress']) ? $module['progress'] : 0; ?>%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: <?php echo isset($module['progress']) ? $module['progress'] : 0; ?>%"></div>
+                                    </div>
+                                </div>
+                                
+                                <button class="continue-button" onclick="startModule(<?php echo $module['id']; ?>)">
+                                    Kontynuuj
+                                </button>
+                            </div>
+                        </div>
+                        <?php $gradientIndex++; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="no-modules">
+                        <p>Nie znaleziono żadnych modułów.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Komunikat gdy brak wyników wyszukiwania -->
+            <div id="noResultsMessage" class="no-results" style="display: none;">
+                <p>Nie znaleziono modułów pasujących do kryteriów wyszukiwania</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="public/scripts/modules.js"></script>
+</body>
+</html>
