@@ -5,7 +5,7 @@ require_once 'Repository.php';
 class UserActivityRepository extends Repository {
 
     public function logActivity(int $userId): void {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->getConnection()->prepare('
             INSERT INTO user_activity (user_id, activity_date) 
             VALUES (:userId, CURRENT_DATE) 
             ON CONFLICT (user_id, activity_date) DO NOTHING
@@ -15,7 +15,7 @@ class UserActivityRepository extends Repository {
     }
 
     public function getRecentActivityCount(int $userId): int {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->getConnection()->prepare('
             SELECT COUNT(DISTINCT activity_date) 
             FROM user_activity 
             WHERE user_id = :userId 
@@ -27,7 +27,7 @@ class UserActivityRepository extends Repository {
     }
 
     public function calculateStreak(int $userId): int {
-        $stmt = $this->database->connect()->prepare('
+        $stmt = $this->getConnection()->prepare('
             SELECT activity_date 
             FROM user_activity 
             WHERE user_id = :userId 

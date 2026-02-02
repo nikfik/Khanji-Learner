@@ -27,7 +27,8 @@ let learningSession = {
     characters: [],
     currentIndex: 0,
     results: [],
-    setId: null
+    setId: null,
+    sessionId: null  // Unikalny ID dla każdej sesji nauki
 };
 
 let canvas, ctx;
@@ -106,6 +107,8 @@ async function startLearningSession(setId) {
             learningSession.currentIndex = 0;
             learningSession.results = [];
             learningSession.setId = setId;
+            // Generuj unikalny session_id na START sesji
+            learningSession.sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
             document.getElementById('learning-modal').style.display = 'flex';
             document.getElementById('total-cards').textContent = data.characters.length;
@@ -127,13 +130,28 @@ function showCurrentCharacter() {
     // Aktualizuj wskaźnik postępu
     document.getElementById('current-card').textContent = learningSession.currentIndex + 1;
     
-    // Ustaw dane znaku
-    document.getElementById('learning-char').textContent = char.symbol;
+    // Ustaw dane znaku - romaji do głównego wyświetlenia
     document.getElementById('learning-romaji').textContent = char.romaji;
-    document.getElementById('learning-stroke-img').src = char.stroke_image_path || 'public/img/default-stroke.png';
+    
+    // Ustaw dane znaku dla podpowiedzi (hint)
+    document.getElementById('learning-char-hint').textContent = char.symbol;
+    document.getElementById('learning-stroke-img-hint').src = char.stroke_image_path || 'public/img/default-stroke.png';
+    
+    // Ukryj hint na początku
+    document.getElementById('hint-char').style.display = 'none';
     
     // Pokaż fazę pokazania
     showPhase('show-phase');
+}
+
+// Pokaż podpowiedź - znak
+function revealCharacter() {
+    const hintDiv = document.getElementById('hint-char');
+    if (hintDiv.style.display === 'none') {
+        hintDiv.style.display = 'block';
+    } else {
+        hintDiv.style.display = 'none';
+    }
 }
 
 // Przejdź do fazy rysowania
@@ -153,12 +171,14 @@ function showPhase(phaseId) {
 // Oznacz jako poprawne
 function markCorrect() {
     recordResult(true);
+    saveDrawingToServer();
     nextCharacter();
 }
 
 // Oznacz jako niepoprawne
 function markIncorrect() {
     recordResult(false);
+    saveDrawingToServer();
     nextCharacter();
 }
 
@@ -168,6 +188,32 @@ function recordResult(correct) {
     learningSession.results.push({
         character_id: char.id,
         correct: correct
+    });
+}
+
+// Wyślij rysunek do serwera
+function saveDrawingToServer() {
+    const canvas = document.getElementById('drawing-canvas');
+    const char = learningSession.characters[learningSession.currentIndex];
+    
+    if (!canvas || !char) return;
+    
+    const drawingData = canvas.toDataURL('image/png');
+    
+    fetch('/api/learning/saveDrawing', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            character_id: char.id,
+            romaji: char.romaji,
+            drawing_data: drawingData,
+            session_id: learningSession.sessionId  // Użyj tego samego session_id dla wszystkich rysunków
+        })
+    }).catch(error => {
+        console.error('Error saving drawing:', error);
+        // Nie przerywamy sesji jeśli zapis się nie uda
     });
 }
 
