@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanji Master - Rejestracja</title>
-    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
-    <link rel="stylesheet" type="text/css" href="public/styles/login.css">
+    <link rel="stylesheet" href="public/styles/login2.css">
 </head>
 <body>
     <div class="login-container">
-        <h1>PANEL REJESTRACJI</h1>
+        <img src="https://imgur.com/DWvm1wZ.png" alt="Kanji Master Logo" class="app-logo">
+        <h1>Zarejestruj się</h1>
 
         <?php if (!empty($message)): ?>
             <!-- WYTYCZNA #19: Dane wyświetlane w widokach są escapowane -->
@@ -25,25 +25,56 @@
 
             <!-- WYTYCZNA #3: Walidacja formatu email po stronie serwera (type="email" dodatkowo po stronie klienta) -->
             <!-- WYTYCZNA #9: Ograniczam długość wejścia (maxlength) -->
-            <input name="email" type="email" placeholder="Twój email" required maxlength="255" autocomplete="email">
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" placeholder="Wprowadź swój e-mail" required maxlength="255" autocomplete="email">
+            </div>
+
+            <div class="input-group">
+                <label for="name">Imię</label>
+                <input id="name" name="name" type="text" placeholder="Twoje imię" required maxlength="100" autocomplete="given-name">
+            </div>
+
+            <div class="input-group">
+                <label for="surname">Nazwisko</label>
+                <input id="surname" name="surname" type="text" placeholder="Twoje nazwisko" required maxlength="100" autocomplete="family-name">
+            </div>
 
             <!-- WYTYCZNA #17: Waliduję złożoność hasła (min. długość - pattern) -->
             <!-- WYTYCZNA #22: Hasło nie jest przekazywane do widoków (type="password") -->
-            <input name="password" type="password" placeholder="Podaj hasło (min. 8 znaków, wielka/mała litera i cyfra)" required minlength="8" maxlength="255" autocomplete="new-password">
+            <div class="input-group">
+                <label for="password">Hasło</label>
+                <div class="password-wrapper">
+                    <input id="password" name="password" type="password" placeholder="Min. 8 znaków, wielka/mała litera i cyfra" required minlength="8" maxlength="255" autocomplete="new-password">
+                    <span class="eye-icon">👁️</span>
+                </div>
+            </div>
 
-            <input name="password_confirm" type="password" placeholder="Podaj hasło ponownie" required minlength="8" maxlength="255" autocomplete="new-password">
+            <div class="input-group">
+                <label for="password_confirm">Powtórz hasło</label>
+                <input id="password_confirm" name="password_confirm" type="password" placeholder="Powtórz hasło" required minlength="8" maxlength="255" autocomplete="new-password">
+            </div>
 
-            <!-- WYTYCZNA #9: Ograniczam długość wejścia (imię, nazwisko) -->
-            <input name="name" type="text" placeholder="Imię" required maxlength="100" autocomplete="given-name">
-
-            <input name="surname" type="text" placeholder="Nazwisko" required maxlength="100" autocomplete="family-name">
-
-            <button type="submit">ZAREJESTRUJ SIĘ</button>
+            <button type="submit" class="btn-login">Zarejestruj się</button>
         </form>
 
-        <div class="register-link" style="margin-top: 15px;">
+        <div class="register-link">
             Masz już konto? <a href="/login">Zaloguj się</a>
         </div>
     </div>
+    
+    <script>
+        // Pokaż/ukryj hasło
+        document.querySelector('.eye-icon').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+    </script>
 </body>
 </html>

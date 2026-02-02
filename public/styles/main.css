@@ -54,33 +54,6 @@ body {
     padding: 0 20px;
 }
 
-/* Toolbar na górze */
-.top-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid #f43939;
-}
-
-.logo {
-    font-weight: bold;
-    font-size: 20px;
-    color: #333;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #777;
-    margin-left: 20px;
-    font-weight: 500;
-}
-
-.nav-links a.active {
-    color: #f39200;
-    border-bottom: 2px solid #f39200;
-}
-
 /* Header */
 .main-header {
     margin: 40px 0;

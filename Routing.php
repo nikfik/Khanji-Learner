@@ -2,12 +2,17 @@
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/CharacterController.php';
+require_once 'src/controllers/ModuleController.php';
 class Routing{
 
     public static $routes=[
         'login'=>[
             'controller'=>"SecurityController",
             'action'=>'login'
+        ],
+        'logout'=>[
+            'controller'=>"SecurityController",
+            'action'=>'logout'
         ],
         'register'=>[
             'controller'=>"SecurityController",
@@ -44,6 +49,14 @@ class Routing{
         'api/profile/update'=>[
             'controller'=>"DashboardController",
             'action'=>'updateProfile'
+        ],
+        'api/profile/getMoreSessions'=>[
+            'controller'=>"DashboardController",
+            'action'=>'getMoreSessions'
+        ],
+        'modules'=>[
+            'controller'=>"ModuleController",
+            'action'=>'modules'
         ]
     ];
     
@@ -56,6 +69,7 @@ public static function run(string $path) {
         case 'logout':
         case 'characters':
         case 'profile':
+        case 'modules':
         case 'api/learning/start':
         case 'api/learning/finish':
         case 'api/learning/saveDrawing':

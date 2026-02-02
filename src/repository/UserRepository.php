@@ -78,7 +78,7 @@ class UserRepository extends Repository
     public function getUserByEmail(string $email): ?User {
         // WYTYCZNA #1: Prepared statement
         $stmt = $this->getConnection()->prepare('
-            SELECT id, username, email, password, name, surname, bio, created_at, last_login
+            SELECT id, username, email, password, name, surname, bio, encode(profile_picture, \'base64\') as profile_picture, created_at, last_login
             FROM users 
             WHERE email = :email
         ');
@@ -101,6 +101,7 @@ class UserRepository extends Repository
             $userData['name'],
             $userData['surname'],
             $userData['bio'],
+            $userData['profile_picture'],
             $userData['created_at'],
             $userData['last_login']
         );
@@ -110,7 +111,7 @@ class UserRepository extends Repository
     // Pobierz użytkownika po ID
     public function getUserById(int $userId): ?User {
         $stmt = $this->getConnection()->prepare('
-            SELECT id, username, email, password, name, surname, bio, created_at, last_login
+            SELECT id, username, email, password, name, surname, bio, encode(profile_picture, \'base64\') as profile_picture, created_at, last_login
             FROM users 
             WHERE id = :user_id
         ');
@@ -132,9 +133,49 @@ class UserRepository extends Repository
             $userData['name'],
             $userData['surname'],
             $userData['bio'],
+            $userData['profile_picture'],
             $userData['created_at'],
             $userData['last_login']
         );
+    }
+
+    // WYTYCZNA #1: Ochrona przed SQL injection (prepared statements)
+    // Aktualizuj zdjęcie profilowe użytkownika
+    public function updateProfilePicture(int $userId, string $pictureData): bool {
+        try {
+            $stmt = $this->getConnection()->prepare('
+                UPDATE users 
+                SET profile_picture = decode(:picture_data, \'base64\')
+                WHERE id = :user_id
+            ');
+            
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindParam(':picture_data', $pictureData, PDO::PARAM_STR);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Failed to update profile picture for user ID: " . $userId);
+            return false;
+        }
+    }
+
+    // WYTYCZNA #1: Ochrona przed SQL injection (prepared statements)
+    // Aktualizuj imię i nazwisko użytkownika
+    public function updateNameAndSurname(int $userId, string $name, string $surname): bool {
+        try {
+            $stmt = $this->getConnection()->prepare('
+                UPDATE users 
+                SET name = :name, surname = :surname
+                WHERE id = :user_id
+            ');
+            
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':surname', $surname, PDO::PARAM_STR);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Failed to update name and surname for user ID: " . $userId);
+            return false;
+        }
     }
 
     // WYTYCZNA #1: Ochrona przed SQL injection (prepared statements)

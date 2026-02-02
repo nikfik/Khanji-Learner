@@ -10,33 +10,6 @@ body {
     padding: 0 20px;
 }
 
-
-/* Toolbar na górze */
-.top-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid #f43939;
-}
-
-.logo {
-    font-weight: bold;
-    font-size: 20px;
-    color: #333;
-}
-.nav-links a {
-    text-decoration: none;
-    color: #777;
-    margin-left: 20px;
-    font-weight: 500;
-}
-
-.nav-links a.active {
-    color: #f39200;
-    border-bottom: 2px solid #f39200;
-}
-
 /* Header */
 .main-header {
     margin: 40px 0;
@@ -61,7 +34,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -69,6 +42,12 @@ body {
 .character-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.character-card.mastered {
+    border: 2px solid #f39200; /* Pomarańczowy/Złoty kolor z Figmy */
+    background-color: #fff9f5;
+    box-shadow: 0 0 10px rgba(243, 146, 0, 0.2);
 }
 
 .card-text h3 {
@@ -91,11 +70,6 @@ body {
     position: absolute;
     align-self: center;
     right: 60px;
-}
-.char-card.mastered {
-    border: 2px solid #f39200; /* Pomarańczowy/Złoty kolor z Figmy */
-    background-color: #fff9f5;
-    box-shadow: 0 0 10px rgba(243, 146, 0, 0.2);
 }
 
 .view-counter {

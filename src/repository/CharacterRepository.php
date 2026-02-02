@@ -70,8 +70,8 @@ class CharacterRepository extends Repository {
     }
 
     // WYTYCZNA #1: Prepared statements / ochrona SQL injection
-    // Pobierz ostatnie rysunki użytkownika
-    public function getUserDrawings(int $userId, int $limit = 10): array {
+    // Pobierz ostatnie rysunki użytkownika z obsługą paginacji
+    public function getUserDrawings(int $userId, int $limit = 10, int $offset = 0): array {
         $stmt = $this->getConnection()->prepare('
             SELECT ud.id, ud.user_id, ud.session_id, ud.character_id, ud.romaji, 
                    encode(ud.drawing_data, \'base64\') as drawing_data,
@@ -81,10 +81,12 @@ class CharacterRepository extends Repository {
             WHERE ud.user_id = :userId
             ORDER BY ud.created_at DESC
             LIMIT :limit
+            OFFSET :offset
         ');
         
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

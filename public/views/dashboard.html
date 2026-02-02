@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanji Master - Alfabety</title>
+    <link rel="stylesheet" type="text/css" href="public/styles/toolbar.css">
     <link rel="stylesheet" type="text/css" href="public/styles/main.css">
 </head>
 <body>
@@ -11,10 +12,26 @@
         <nav class="top-toolbar">
             <div class="logo">Kanji Master</div>
             <div class="nav-links">
-                <a href="#" class="active">Alfabety</a>
-                <a href="/dashboard">Zajęcia</a>
-                <a href="#">Profil</a>
+                <a href="/dashboard" class="active">Alfabety</a>
+                <a href="/modules">Zajęcia</a>
+                <a href="/profile">Profil</a>
             </div>
+            <?php if (isset($currentUser) && $currentUser): ?>
+            <div class="user-profile">
+                <img src="<?php 
+                    if (!empty($currentUser['profile_picture'])) {
+                        echo 'data:image/jpeg;base64,' . $currentUser['profile_picture'];
+                    } else {
+                        echo 'https://ui-avatars.com/api/?name=' . urlencode($currentUser['name'] ?? '' . ' ' . $currentUser['surname'] ?? '') . '&background=f39200&color=fff';
+                    }
+                ?>" alt="Profile" class="profile-avatar" title="<?php echo $currentUser['username'] ?? 'Profil'; ?>">
+                <a href="/logout" class="logout-btn">Wyloguj</a>
+            </div>
+            <?php else: ?>
+            <div class="user-profile">
+                <a href="/login" class="logout-btn">Zaloguj się</a>
+            </div>
+            <?php endif; ?>
         </nav>
 
         <main class="content">
