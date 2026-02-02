@@ -132,6 +132,24 @@ class SecurityController extends AppController {
         exit();
     }
 
+    // WYTYCZNA #6: Metoda logout
+    public function logout() {
+        // WYTYCZNA #5: Logowanie dostępne tylko przez HTTPS
+        $this->requireHTTPS();
+
+        // WYTYCZNA #25: Loguję wylogowanie użytkownika
+        if (isset($_SESSION['user_id'])) {
+            SecurityLogger::logLogout($_SESSION['user_id'], $_SERVER['REMOTE_ADDR'] ?? 'unknown');
+        }
+
+        // WYTYCZNA #14: Destrukcja sesji
+        session_destroy();
+
+        // Przekieruj na login
+        header("Location: /login");
+        exit();
+    }
+
     // WYTYCZNA #6: Metoda register przyjmuje dane tylko na POST, GET tylko renderuje widok
     public function register() {
         // WYTYCZNA #5: Rejestracja dostępna tylko przez HTTPS
@@ -237,33 +255,6 @@ class SecurityController extends AppController {
             'message' => 'Rejestracja zakończona pomyślnie! Możesz się teraz zalogować.',
             'csrf_token' => CSRFToken::generate()
         ]);
-    }
-
-    // WYTYCZNA #24: Mam poprawne wylogowanie – niszczę sesję użytkownika
-    public function logout() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $userEmail = $_SESSION['user_email'] ?? 'unknown';
-        $clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-
-        // WYTYCZNA #25: Loguj wylogowanie
-        SecurityLogger::logLogout($userEmail, $clientIp);
-
-        // WYTYCZNA #24: Niszczenie sesji
-        $_SESSION = array();
-
-        // Usuń cookie sesyjne
-        if (isset($_COOKIE[session_name()])) {
-            setcookie(session_name(), '', time() - 3600, '/');
-        }
-
-        session_destroy();
-
-        // Przekieruj do strony logowania
-        header("Location: /login");
-        exit();
     }
 
     // WYTYCZNA #5: Logowanie i rejestracja dostępne tylko przez HTTPS

@@ -26,6 +26,7 @@
                         echo 'https://ui-avatars.com/api/?name=' . urlencode($currentUser['name'] ?? '' . ' ' . $currentUser['surname'] ?? '') . '&background=f39200&color=fff';
                     }
                 ?>" alt="Profile" class="profile-avatar" title="<?php echo $currentUser['username'] ?? 'Profil'; ?>">
+                <a href="/logout" class="logout-btn">Wyloguj</a>
             </div>
             <?php endif; ?>
         </nav>

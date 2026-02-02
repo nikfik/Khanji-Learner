@@ -26,6 +26,7 @@
                         echo 'https://ui-avatars.com/api/?name=' . urlencode($user['name'] ?? '' . ' ' . $user['surname'] ?? '') . '&background=f39200&color=fff';
                     }
                 ?>" alt="Profile" class="profile-avatar" title="<?php echo $user['username'] ?? 'Profil'; ?>">
+                <a href="/logout" class="logout-btn">Wyloguj</a>
             </div>
         </nav>
 
@@ -36,7 +37,13 @@
             </header>
 
             <section class="user-card">
-                <div class="user-avatar"><?php echo substr(($user['name'] ?? '') . ($user['surname'] ?? ''), 0, 2); ?></div>
+                <img class="user-avatar" src="<?php 
+                    if (!empty($user['profile_picture'])) {
+                        echo 'data:image/jpeg;base64,' . $user['profile_picture'];
+                    } else {
+                        echo 'https://ui-avatars.com/api/?name=' . urlencode(($user['name'] ?? '') . ' ' . ($user['surname'] ?? '')) . '&background=f39200&color=fff&size=80';
+                    }
+                ?>" alt="<?php echo ($user['name'] ?? '') . ' ' . ($user['surname'] ?? ''); ?>">
                 <div class="user-info">
                     <h2><?php 
                         $fullName = trim(($user['name'] ?? '') . ' ' . ($user['surname'] ?? ''));

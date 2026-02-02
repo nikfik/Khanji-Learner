@@ -14,14 +14,9 @@
 .user-avatar {
     width: 80px;
     height: 80px;
-    background: #f39200;
-    color: white;
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 28px;
-    font-weight: bold;
+    object-fit: cover;
+    border: 3px solid #f39200;
     flex-shrink: 0;
 }
 

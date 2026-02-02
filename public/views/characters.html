@@ -25,6 +25,7 @@
                         echo 'https://ui-avatars.com/api/?name=' . urlencode($currentUser['name'] ?? '' . ' ' . $currentUser['surname'] ?? '') . '&background=f39200&color=fff';
                     }
                 ?>" alt="Profile" class="profile-avatar" title="<?php echo $currentUser['username'] ?? 'Profil'; ?>">
+                <a href="/logout" class="logout-btn">Wyloguj</a>
             </div>
             <?php endif; ?>
         </nav>
@@ -38,8 +39,8 @@
 
     <div class="character-grid">
    <?php foreach($characters as $c): ?>
-    <div class="character-card">
-        <div class="char-card <?php echo $c['is_mastered'] ? 'mastered' : ''; ?>" 
+    <div class="character-card <?php echo $c['is_mastered'] ? 'mastered' : ''; ?>">
+        <div class="char-card" 
           onclick="openModal(
             '<?php echo $c['symbol']; ?>', 
             '<?php echo $c['romaji']; ?>', 
