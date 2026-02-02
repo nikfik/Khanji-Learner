@@ -1,6 +1,7 @@
 <?php
 require_once 'AppController.php';
 require_once __DIR__.'/../repository/ModuleRepository.php';
+require_once __DIR__.'/../repository/UserRepository.php';
 
 class ModuleController extends AppController {
     
@@ -15,6 +16,21 @@ class ModuleController extends AppController {
      */
     public function modules() {
         $userId = $_SESSION['user_id'] ?? null;
+        
+        // Pobierz dane użytkownika do wyświetlenia w toolbarze
+        $currentUser = null;
+        if ($userId && isset($_SESSION['logged_in'])) {
+            $userRepository = UserRepository::getInstance();
+            $user = $userRepository->getUserById($userId);
+            if ($user) {
+                $currentUser = [
+                    'name' => $user->getName(),
+                    'surname' => $user->getSurname(),
+                    'username' => $user->getUsername(),
+                    'profile_picture' => $user->getProfilePicture()
+                ];
+            }
+        }
         
         // Pobierz wszystkie moduły
         $modules = $this->moduleRepository->getAllModules();
@@ -35,7 +51,10 @@ class ModuleController extends AppController {
             }
         }
         
-        $this->render('modules', ['modules' => $modules]);
+        $this->render('modules', [
+            'modules' => $modules,
+            'currentUser' => $currentUser
+        ]);
     }
     
     /**

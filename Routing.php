@@ -46,6 +46,10 @@ class Routing{
             'controller'=>"DashboardController",
             'action'=>'updateProfile'
         ],
+        'api/profile/getMoreSessions'=>[
+            'controller'=>"DashboardController",
+            'action'=>'getMoreSessions'
+        ],
         'modules'=>[
             'controller'=>"ModuleController",
             'action'=>'modules'

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil - Kanji Master</title>
+    <link rel="stylesheet" type="text/css" href="public/styles/toolbar.css">
     <link rel="stylesheet" type="text/css" href="public/styles/main.css">
     <link rel="stylesheet" type="text/css" href="public/styles/profile.css">
     <script src="public/scripts/profile.js"></script>
@@ -17,6 +18,15 @@
                 <a href="/modules">Zajęcia</a>
                 <a href="/profile" class="active">Profil</a>
             </div>
+            <div class="user-profile">
+                <img src="<?php 
+                    if (!empty($user['profile_picture'])) {
+                        echo 'data:image/jpeg;base64,' . $user['profile_picture'];
+                    } else {
+                        echo 'https://ui-avatars.com/api/?name=' . urlencode($user['name'] ?? '' . ' ' . $user['surname'] ?? '') . '&background=f39200&color=fff';
+                    }
+                ?>" alt="Profile" class="profile-avatar" title="<?php echo $user['username'] ?? 'Profil'; ?>">
+            </div>
         </nav>
 
         <main class="content">
@@ -26,9 +36,12 @@
             </header>
 
             <section class="user-card">
-                <div class="user-avatar"><?php echo substr($user['name'] ?? '', 0, 2); ?></div>
+                <div class="user-avatar"><?php echo substr(($user['name'] ?? '') . ($user['surname'] ?? ''), 0, 2); ?></div>
                 <div class="user-info">
-                    <h2><?php echo $user['name'] ?? 'Użytkownik'; ?></h2>
+                    <h2><?php 
+                        $fullName = trim(($user['name'] ?? '') . ' ' . ($user['surname'] ?? ''));
+                        echo !empty($fullName) ? $fullName : $user['username'] ?? 'Użytkownik'; 
+                    ?></h2>
                     <p class="username">@<?php echo $user['username'] ?? 'brak'; ?></p>
                     <p class="bio"><?php echo $user['bio'] ?? 'Brak bio'; ?></p>
                     <p class="joined">Dołączył: <?php echo $user['created_at'] ?? 'Brak daty'; ?></p>
@@ -56,7 +69,7 @@
                 <h3>Ostatnie Sesje Nauki</h3>
                 
                 <?php if (isset($drawings) && !empty($drawings)): ?>
-                    <div class="drawings-container">
+                    <div class="drawings-container" id="sessions-container">
                         <?php 
                             // Grupuj rysunki po session_id
                             $sessions = [];
@@ -70,6 +83,7 @@
                             
                             // Wyświetl pierwsze 3 sesje
                             $displayedSessions = array_slice($sessions, 0, 3);
+                            $totalSessions = count($sessions);
                         ?>
                         
                         <?php foreach ($displayedSessions as $sessionId => $sessionDrawings): ?>
@@ -91,10 +105,11 @@
                                 </div>
                             </div>
                         <?php endforeach; ?>
+                    </div>
                         
-                        <?php if (count($sessions) > 3): ?>
-                            <button class="expand-btn" onclick="toggleAllSessions()">
-                                <span id="expand-text">Rozwiń wszystkie</span>
+                    <?php if ($totalSessions > 3): ?>
+                        <button class="expand-btn" id="load-more-btn" onclick="loadMoreSessions(3)">
+                            <span id="expand-text">Załaduj 5 więcej sesji</span>
                             </button>
                         <?php endif; ?>
                     </div>
@@ -113,6 +128,37 @@
             <h3>Edytuj Profil</h3>
             
             <form id="edit-form" onsubmit="saveProfile(event)">
+                <div class="form-group">
+                    <label for="profilePicture">Zdjęcie profilowe</label>
+                    <div class="profile-picture-input">
+                        <img id="preview" src="<?php 
+                            if (!empty($user['profile_picture'])) {
+                                echo 'data:image/jpeg;base64,' . $user['profile_picture'];
+                            } else {
+                                echo 'https://ui-avatars.com/api/?name=' . urlencode($user['name'] ?? '' . ' ' . $user['surname'] ?? '') . '&background=f39200&color=fff';
+                            }
+                        ?>" alt="Preview" class="picture-preview">
+                        <input type="file" id="profilePicture" name="profilePicture" accept="image/*" onchange="previewImage(event)">
+                        <label for="profilePicture" class="file-input-label">Wybierz zdjęcie</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Imię</label>
+                    <input type="text" id="name" name="name" 
+                           value="<?php echo $user['name'] ?? ''; ?>" 
+                           placeholder="Twoje imię"
+                           maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="surname">Nazwisko</label>
+                    <input type="text" id="surname" name="surname" 
+                           value="<?php echo $user['surname'] ?? ''; ?>" 
+                           placeholder="Twoje nazwisko"
+                           maxlength="100">
+                </div>
+                
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" 
@@ -137,14 +183,71 @@
     </div>
 
     <script>
+        // Załaduj więcej sesji
+        async function loadMoreSessions(offset) {
+            try {
+                const response = await fetch(`/api/profile/getMoreSessions?offset=${offset}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const container = document.getElementById('sessions-container');
+                    
+                    // Dodaj nowe sesje
+                    for (const [sessionId, sessionDrawings] of Object.entries(data.sessions)) {
+                        const sessionDiv = document.createElement('div');
+                        sessionDiv.className = 'session-row';
+                        
+                        const createdAt = new Date(sessionDrawings[0].created_at);
+                        const dateStr = createdAt.toLocaleDateString('pl-PL') + ' ' + 
+                                       createdAt.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+                        
+                        sessionDiv.innerHTML = `
+                            <h4 class="session-title">Sesja z ${dateStr}</h4>
+                            <div class="drawings-gallery">
+                                ${sessionDrawings.map(drawing => `
+                                    <div class="drawing-item">
+                                        ${drawing.drawing_data ? 
+                                            `<img src="data:image/png;base64,${drawing.drawing_data}" 
+                                                  alt="${drawing.romaji}"
+                                                  class="drawing-image">` :
+                                            `<div class="drawing-placeholder">Brak obrazu</div>`
+                                        }
+                                        <span class="drawing-label">${drawing.character_romaji || drawing.romaji}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                        
+                        container.appendChild(sessionDiv);
+                    }
+                    
+                    // Ukryj przycisk lub zmień tekst
+                    const btn = document.getElementById('load-more-btn');
+                    if (data.hasMore) {
+                        btn.onclick = () => loadMoreSessions(offset + 5);
+                        btn.innerHTML = '<span id="expand-text">Załaduj 5 więcej sesji</span>';
+                    } else {
+                        btn.style.display = 'none';
+                    }
+                } else {
+                    alert('Błąd podczas ładowania sesji: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error loading more sessions:', error);
+                alert('Błąd podczas ładowania sesji');
+            }
+        }
+
         // Licznik znaków w bio
-        document.getElementById('bio').addEventListener('input', function() {
-            document.getElementById('char-count').textContent = this.value.length;
-        });
-        
-        // Aktualizuj licznik przy załadowaniu
-        const bioText = document.getElementById('bio').value;
-        document.getElementById('char-count').textContent = bioText.length;
+        const bioElement = document.getElementById('bio');
+        if (bioElement) {
+            bioElement.addEventListener('input', function() {
+                document.getElementById('char-count').textContent = this.value.length;
+            });
+            
+            // Aktualizuj licznik przy załadowaniu
+            document.getElementById('char-count').textContent = bioElement.value.length;
+        }
     </script>
 </body>
 </html>

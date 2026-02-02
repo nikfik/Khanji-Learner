@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanji Master - Dostępne zajęcia</title>
+    <link rel="stylesheet" type="text/css" href="public/styles/toolbar.css">
     <link rel="stylesheet" type="text/css" href="public/styles/main.css">
     <link rel="stylesheet" type="text/css" href="public/styles/modules.css">
 </head>
@@ -16,9 +17,17 @@
                 <a href="/modules" class="active">Zajęcia</a>
                 <a href="/profile">Profil</a>
             </div>
+            <?php if (isset($currentUser) && $currentUser): ?>
             <div class="user-profile">
-                <img src="https://ui-avatars.com/api/?name=User&background=f39200&color=fff" alt="Profile" class="profile-avatar">
+                <img src="<?php 
+                    if (!empty($currentUser['profile_picture'])) {
+                        echo 'data:image/jpeg;base64,' . $currentUser['profile_picture'];
+                    } else {
+                        echo 'https://ui-avatars.com/api/?name=' . urlencode($currentUser['name'] ?? '' . ' ' . $currentUser['surname'] ?? '') . '&background=f39200&color=fff';
+                    }
+                ?>" alt="Profile" class="profile-avatar" title="<?php echo $currentUser['username'] ?? 'Profil'; ?>">
             </div>
+            <?php endif; ?>
         </nav>
 
         <main class="modules-content">
