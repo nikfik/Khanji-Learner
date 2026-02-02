@@ -19,17 +19,19 @@ class ModuleController extends AppController {
         // Pobierz wszystkie moduły
         $modules = $this->moduleRepository->getAllModules();
         
-        // Dodaj postęp użytkownika do każdego modułu
+        // Dodaj rzeczywisty postęp użytkownika do każdego modułu
         foreach ($modules as &$module) {
             if ($userId) {
-                // TODO: Implementacja faktycznego postępu użytkownika
-                // Na razie ustawiamy losowe wartości dla demonstracji
-                $progress = rand(0, 100);
-                $module['progress'] = $progress;
-                $module['learned_count'] = (int)($module['character_count'] * $progress / 100);
+                // Pobierz rzeczywisty postęp z user_progress
+                $progress = $this->moduleRepository->getUserModuleProgress($userId, $module['id']);
+                $module['progress'] = $progress['percent'];
+                $module['learned_count'] = $progress['mastered'];
+                $module['total_count'] = $progress['total'];
             } else {
+                // Nielogowany użytkownik - bez postępu
                 $module['progress'] = 0;
                 $module['learned_count'] = 0;
+                $module['total_count'] = 0;
             }
         }
         
@@ -43,11 +45,22 @@ class ModuleController extends AppController {
         header('Content-Type: application/json');
         
         $level = $_GET['level'] ?? 'all';
+        $userId = $_SESSION['user_id'] ?? null;
         
         if ($level === 'all') {
             $modules = $this->moduleRepository->getAllModules();
         } else {
             $modules = $this->moduleRepository->getModulesBySpecificLevel($level);
+        }
+        
+        // Dodaj postęp do każdego modułu
+        foreach ($modules as &$module) {
+            if ($userId) {
+                $progress = $this->moduleRepository->getUserModuleProgress($userId, $module['id']);
+                $module['progress'] = $progress['percent'];
+            } else {
+                $module['progress'] = 0;
+            }
         }
         
         echo json_encode($modules);
@@ -60,11 +73,22 @@ class ModuleController extends AppController {
         header('Content-Type: application/json');
         
         $searchTerm = $_GET['q'] ?? '';
+        $userId = $_SESSION['user_id'] ?? null;
         
         if (empty($searchTerm)) {
             $modules = $this->moduleRepository->getAllModules();
         } else {
             $modules = $this->moduleRepository->searchModules($searchTerm);
+        }
+        
+        // Dodaj postęp do każdego modułu
+        foreach ($modules as &$module) {
+            if ($userId) {
+                $progress = $this->moduleRepository->getUserModuleProgress($userId, $module['id']);
+                $module['progress'] = $progress['percent'];
+            } else {
+                $module['progress'] = 0;
+            }
         }
         
         echo json_encode($modules);
