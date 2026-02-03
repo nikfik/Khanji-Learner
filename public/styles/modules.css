@@ -38,6 +38,7 @@
     outline: none;
     transition: all 0.3s ease;
     background-color: #f8f8f8;
+    box-sizing: border-box;
 }
 
 .search-input:focus {
@@ -276,6 +277,27 @@
     .modules-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+    }
+
+    .search-container {
+        max-width: 100%;
+        width: 100%;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .search-input {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .user-profile {
+        display: none;
+    }
+
+    .logout-btn {
+        display: none;
     }
 
     .filter-tabs {
