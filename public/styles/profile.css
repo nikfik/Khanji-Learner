@@ -11,6 +11,60 @@
     position: relative;
 }
 
+/* ===== BOTTOM NAVIGATION BAR ===== */
+.bottom-navbar {
+    display: none; /* Domyślnie ukryty na desktop */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: white;
+    border-top: 1px solid #f39200;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+    z-index: 999;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+}
+
+.nav-item {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #777;
+    font-size: 12px;
+    font-weight: 500;
+    gap: 4px;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-item:active,
+.nav-item.active {
+    color: #f39200;
+    border-bottom-color: #f39200;
+}
+
+.nav-item:hover {
+    background: #fafafa;
+    color: #f39200;
+}
+
+.nav-icon {
+    font-size: 20px;
+}
+
+.nav-label {
+    font-size: 11px;
+    text-transform: capitalize;
+}
+
+
 .user-avatar {
     width: 80px;
     height: 80px;
@@ -417,4 +471,276 @@
 main.content {
     padding: 20px;
     animation: fadeIn 0.5s ease; /* Ładne pojawianie się strony */
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 80px; /* Miejsce dla bottom navbara */
+    }
+
+    .bottom-navbar {
+        display: flex; /* Pokazuj bottom navbar na mobile */
+    }
+
+    .app-container {
+        max-width: 100%;
+        padding: 0 12px;
+    }
+
+    /* Toolbar */
+    .top-toolbar {
+        padding: 12px 0;
+        border-bottom: 1px solid #f39200;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    .nav-links {
+        display: none; /* Ukrywamy górny navbar na mobile */
+    }
+
+    .nav-links a {
+        margin-left: 8px;
+        font-size: 12px;
+    }
+
+    /* Header */
+    .profile-header {
+        margin: 15px 0;
+    }
+
+    .profile-header h1 {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .profile-header p {
+        font-size: 12px;
+    }
+
+    /* User card */
+    .user-card {
+        padding: 20px;
+        gap: 15px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .user-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 24px;
+    }
+
+    .user-info h2 {
+        font-size: 18px;
+    }
+
+    .user-info .bio {
+        font-size: 12px;
+        max-width: 100%;
+    }
+
+    .user-info .joined {
+        font-size: 11px;
+    }
+
+    .edit-btn {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px 16px;
+    }
+
+    /* Statystyki */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .stat-box {
+        padding: 18px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+
+    .stat-label {
+        font-size: 10px;
+    }
+
+    /* Sekcja rysunków */
+    .drawings-section {
+        padding: 20px;
+    }
+
+    .drawings-section h3 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .drawings-gallery {
+        gap: 8px;
+    }
+
+    .drawing-image,
+    .drawing-placeholder {
+        width: 70px;
+        height: 70px;
+    }
+
+    .drawing-label {
+        font-size: 10px;
+    }
+
+    /* Modal edytowania */
+    .modal-content {
+        width: 95%;
+        max-width: 350px;
+        padding: 25px 20px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 12px;
+        font-size: 16px; /* Zapobiega auto-zoom na iOS */
+    }
+
+    .cancel-btn, .save-btn {
+        font-size: 14px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: 0 8px;
+    }
+
+    .top-toolbar {
+        padding: 10px 0;
+    }
+
+    .profile-header h1 {
+        font-size: 18px;
+    }
+
+    .profile-header p {
+        font-size: 11px;
+    }
+
+    .user-card {
+        padding: 15px;
+    }
+
+    .user-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+
+    .user-info h2 {
+        font-size: 16px;
+    }
+
+    .user-info .username {
+        font-size: 13px;
+    }
+
+    .user-info .bio {
+        font-size: 11px;
+    }
+
+    .user-info .joined {
+        font-size: 10px;
+    }
+
+    .edit-btn {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    .stats-grid {
+        gap: 10px;
+    }
+
+    .stat-box {
+        padding: 15px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+        margin-bottom: 3px;
+    }
+
+    .stat-label {
+        font-size: 9px;
+    }
+
+    .drawings-section {
+        padding: 15px;
+    }
+
+    .drawings-section h3 {
+        font-size: 14px;
+    }
+
+    .session-title {
+        font-size: 11px;
+    }
+
+    .drawings-gallery {
+        gap: 6px;
+    }
+
+    .drawing-image,
+    .drawing-placeholder {
+        width: 60px;
+        height: 60px;
+    }
+
+    .expand-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .modal-content {
+        padding: 20px 15px;
+    }
+
+    .modal-content h3 {
+        font-size: 18px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 16px;
+    }
+
+    .char-count {
+        font-size: 10px;
+    }
+
+    .cancel-btn, .save-btn {
+        font-size: 13px;
+        padding: 10px;
+    }
 }

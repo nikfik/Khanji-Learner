@@ -20,7 +20,7 @@
     display: flex;
     gap: 0;
     flex: 1;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 .nav-links a {
@@ -125,4 +125,7 @@
     .profile-username {
         display: none;
     }
-}
+
+    .user-profile {
+        display: none;
+    }

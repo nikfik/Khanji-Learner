@@ -14,23 +14,23 @@ body {
 
 .login-container {
     background-color: #ffffff;
-    padding: 40px;
+    padding: clamp(24px, 5vw, 40px);
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    width: 100%;
-    max-width: 350px;
+    width: min(92vw, 420px);
+    max-width: 420px;
     text-align: center;
 }
 
 .app-logo {
-    width: 60px;
+    width: clamp(50px, 12vw, 60px);
     margin-bottom: 10px;
 }
 
 h1 {
-    font-size: 24px;
+    font-size: clamp(20px, 4.5vw, 24px);
     color: #333;
-    margin-bottom: 30px;
+    margin-bottom: clamp(18px, 4vw, 30px);
 }
 
 .input-group {
@@ -48,10 +48,15 @@ h1 {
 
 input[type="text"], input[type="email"], input[type="password"] {
     width: 100%;
-    padding: 12px;
+    padding: clamp(12px, 3.5vw, 14px);
     border: 1px solid #eee;
     border-radius: 10px;
     background-color: #fafafa;
+    box-sizing: border-box;
+}
+
+.input-group input {
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -81,13 +86,13 @@ input[type="text"], input[type="email"], input[type="password"] {
 
 .btn-login {
     width: 100%;
-    padding: 15px;
+    padding: clamp(14px, 4vw, 16px);
     background-color: #f38d1d; 
     color: white;
     border: none;
     border-radius: 12px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: clamp(14px, 3.5vw, 16px);
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -106,4 +111,35 @@ input[type="text"], input[type="email"], input[type="password"] {
     color: #f38d1d;
     text-decoration: none;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+
+    .login-container {
+        margin: 16px auto;
+        border-radius: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"] {
+        font-size: 16px; 
+    }
+
+    .btn-login {
+        font-size: 16px;
+    }
+
+    .register-link {
+        margin-top: 20px;
+        font-size: 12px;
+    }
 }
