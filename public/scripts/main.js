@@ -143,7 +143,7 @@ function showCurrentCharacter() {
     
     // Ustaw dane znaku dla podpowiedzi (hint)
     document.getElementById('learning-char-hint').textContent = char.symbol;
-    document.getElementById('learning-stroke-img-hint').src = char.stroke_image_path || 'public/img/default-stroke.png';
+    document.getElementById('learning-stroke-img-hint').src = char.stroke_order || 'public/img/default-stroke.png';
     
     // Ukryj hint na początku
     document.getElementById('hint-char').style.display = 'none';
@@ -290,7 +290,7 @@ function closeLearningModal() {
 function showReference() {
     const char = learningSession.characters[learningSession.currentIndex];
     const img = new Image();
-    img.src = char.stroke_image_path || 'public/img/default-stroke.png';
+    img.src = char.stroke_order || 'public/img/default-stroke.png';
     img.onload = () => {
         ctx.globalAlpha = 0.3;
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);

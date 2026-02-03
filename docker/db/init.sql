@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS characters (
     symbol VARCHAR(10) NOT NULL,
     romaji VARCHAR(20),
     meaning VARCHAR(100),
-    stroke_count INT,
+    stroke_order VARCHAR(255),
     place_order INT
 );
 
