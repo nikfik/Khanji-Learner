@@ -76,6 +76,8 @@ $ 4.Najciekawsze i najważniejsze części kodu
 # 5.Diagram ERD
 
 # 6.Bezpieczeństwo aplikacji
+https://github.com/nikfik/Khanji-Learner/blob/56ae487232ba40f2937304a79124fffa6b2b5b62/src/repository/UserRepository.php#L29-L249
+
 
 # 7.Self Assesment
  ✅ Checklist
