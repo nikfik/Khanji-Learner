@@ -213,48 +213,23 @@ przy nieudanej próbie jest zapisywane zdarzenie przez loggera
 https://github.com/nikfik/Khanji-Learner/blob/f284bf7b819a626da7a6b9c558995e9635724652/src/controllers/SecurityController.php#L86-L88
 
 # 7.Self Assesment
- ✅ Checklist
+ 
+## ✅ Dokumentacja w `README.md`
 
-- [ ] Dokumentacja w `README.md`
-- [ ] Architektura aplikacji (MVC / Frontend–Backend / inna)
-- [ ] Kod napisany obiektowo (część backendowa)
-- [ ] Diagram ERD
-- [ ] Repozytorium Git (historia commitów, struktura)
-- [ ] Realizacja tematu projektu
-- [ ] HTML
-- [ ] PostgreSQL
-- [ ] Złożoność bazy danych
-- [ ] Eksport bazy danych do pliku `.sql`
-- [ ] PHP
-- [ ] JavaScript
-- [ ] Fetch API (AJAX)
-- [ ] Design (estetyka interfejsu)
-- [ ] Responsywność
-- [ ] Logowanie użytkownika
-- [ ] Sesja użytkownika
-- [ ] Uprawnienia użytkowników
-- [ ] Role użytkowników (co najmniej dwie)
-- [ ] Wylogowywanie
-- [ ] Widoki, wyzwalacze, funkcje, transakcje
-- [ ] Akcje na referencjach (klucze obce)
-- [ ] Bezpieczeństwo aplikacji
-- [ ] Brak replikacji kodu (DRY)
-- [ ] Czystość i przejrzystość kodu
+(brak możliwości samooceny pod tym względem, ale jesli profesor to czyta to raczej plik README istnieje, oby wystarczający)
 
-      - [ ] Dokumentacja w `README.md`
-## Dokumentacja w `README.md`
-(brak możliwości samooceny pod tym względem, ale jesli profesor to czyta to raczej plik README istnieje)
+## ✅ Architektura aplikacji (MVC / Frontend–Backend / inna)
 
-## Architektura aplikacji (MVC / Frontend–Backend / inna)
+MVC oznacza model,view controller - aplikacja posiada 1 model, 7 widoków, oraz 5 kontrolerów, dlatego raczej sie załapuje
+
+## ✅ Kod napisany obiektowo (część backendowa)
+
+jest zastosowane dziedziczenie np (kontrolery po appcontroler), singleton, model user gdzie są gettery/settery, to wszystko to są oznaki programowania obiektowego
+
+## ✅ Diagram ERD
 
 
-## Kod napisany obiektowo (część backendowa)
-
-
-## Diagram ERD
-
-
-## Repozytorium Git (historia commitów, struktura)
+## ✅Repozytorium Git (historia commitów, struktura)
 
 aplikacja została ukończona w 36 commitów (pokazane na ostatnim branchu czyli mobile-view, aby uniknąć liczenia commitów związanych z readme.md)
 pierwsze i najważniejsze kroki zostały zaczęte w ferie świąteczne, ale później ze względu na inne przedmioty i projekty nastała przerwa w commitach, dlatego największy skok jest od dnia 30.01 do 03.02
@@ -262,55 +237,73 @@ pierwsze i najważniejsze kroki zostały zaczęte w ferie świąteczne, ale pó�
 <img width="1011" height="711" alt="image" src="https://github.com/user-attachments/assets/14a2f0b2-5d27-4144-b285-61dc8e63eed5" />
 
 
-## Realizacja tematu projektu
+## ✅Realizacja tematu projektu
+
+osobiście uważam że aplikacja, spełnia swoje zadanie jako i jest w pełni użyteczna do samodzielnej nauki. nawet mam zamiar po zakończeniu projektu dopracować małe zmiany i użyć jej osobiście.
+
+## ✅HTML
+
+mamy 7 plików widoku o rozszerzeniu ".html" więc raczej spełniony jest warunek
+
+## ✅PostgreSQL
+
+jest załączona baza danych w PostgreSQL
+
+## ✅Złożoność bazy danych
 
 
-## HTML
+## ✅Eksport bazy danych do pliku `.sql`
 
+baza jest dostępna w repozytorium, jedyne co to przy imporcie może dojść do błędu gdzie polskie znaki są zastępowane przez "??".
 
-## PostgreSQL
+## ✅PHP
 
+backend prawie w całości składa się z plików php, do tego stopnia że aż sie boje czy punkt "javaScript" może być zaliczony
 
-## Złożoność bazy danych
+## ✅JavaScript
 
+mamy 3 pliki  skryptowe:
+ * main.js - obsługa canvy do rysowania zanków
+ * module.js - obsługa wyszukiwarki w modules
+ * profile.js - obsługa edycji profilu oraz rozszerzania historii sesji
 
-## Eksport bazy danych do pliku `.sql`
+## ✅Fetch API (AJAX)
 
+przykłady użycia fetch:
+https://github.com/nikfik/Khanji-Learner/blob/da16c83f17dbcd319f97f1e35b2b16efa597ea54/public/scripts/main.js#L110
+https://github.com/nikfik/Khanji-Learner/blob/da16c83f17dbcd319f97f1e35b2b16efa597ea54/public/scripts/main.js#L211-L225
+https://github.com/nikfik/Khanji-Learner/blob/da16c83f17dbcd319f97f1e35b2b16efa597ea54/public/scripts/profile.js#L95-L101
 
-## PHP
+## ✅Design (estetyka interfejsu)
 
+to samoocena, więc wystarczy że powiem że mi się podoba tak? (jedyne co to dashbord mógłby dostać jakieś zmiany)
 
-## JavaScript
+## ✅Responsywność
 
+widoki mają przystosowane @media dla widoków mobilnych
 
-## Fetch API (AJAX)
+## ✅Logowanie użytkownika
 
+jest możliwość logowania
 
-## Design (estetyka interfejsu)
+## ✅Sesja użytkownika
 
+są wyróżnione sesje użytkowników
 
-## Responsywność
-
-
-## Logowanie użytkownika
-
-
-## Sesja użytkownika
-
-
-## Uprawnienia użytkowników
+## ❌Uprawnienia użytkowników
 
 aplikacja nie ma ról możliwych do przypisania użytkowników, dlatego  nie ma możliwości przypisania im uprawnień.
 jedyne co tutaj mógłbym wskazać to fakt że użytkownicy niezalogowani mają możliwość przeglądania modółów, ale nie mogą uruchomić opcji nauki,
 co zostało zaimplementowane aby uniknąć błędów związanych z  historią oraz postępem nauki.
 
-## Role użytkowników (co najmniej dwie)
+## ❌Role użytkowników (co najmniej dwie)
 jak wspomniane wyżej, użytkownicy nie mają ról, na ten stan aplikacji, rolę nie wydawały się być konieczne, dlatego że to bardziej aplikacja prywatna.
 bardzo prosto było by dodać w tabeli użytkowników pole z przypisaną rolą, ale ich funkcjonalność była mocno ograniczona 
 
 
-## Wylogowywanie
+## ✅Wylogowywanie
 
+Jest możliwość wylogowania która niszczy sesję
 
 ## Widoki, wyzwalacze, funkcje, transakcje
 
@@ -318,10 +311,12 @@ bardzo prosto było by dodać w tabeli użytkowników pole z przypisaną rolą, 
 ## Akcje na referencjach (klucze obce)
 
 
-## Bezpieczeństwo aplikacji
+## ✅Bezpieczeństwo aplikacji
 Punkt 6 w bardziej szczegółowy sposób opisuje bingo podane na zajęciach, więc odsyłam do tego miejsca po więcej informacji.
 
-## Brak replikacji kodu (DRY)
+## ❌Brak replikacji kodu (DRY)
+Starałem się unikać powtórzeń kodu, np poprzez odłączenie toolbara jako osobny css aby nie nie definiować go dla każdego widoku, ale z pewnością są przypadki powótrzeń np w 6.B.2 widać że część kodu dla logowania i rejestracji jest identyczna.
 
+## ✅Czystość i przejrzystość kodu
+napewno znajdą się śmieci, albo pozostałości po nich (np fakt istnienia login2.css), ale wydaje mi się że nie wpływa to na negatywny przegląd kodu, który jest subiektywnie czytelny i intuicyjny
 
-## Czystość i przejrzystość kodu
