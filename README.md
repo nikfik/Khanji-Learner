@@ -328,7 +328,7 @@ https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded
 
 ## 6.A-5 Zwracam sensowne kody HTTP (np. 400/401/403 przy błędach) 
 
-jakby jeszcze było mało analizy securityControllera to tutaj jest całość dlatego że kody są zwracane przy innych błędach
+jakby jeszcze było mało analizy securityControllera  ten krok jest realizowany w jego całości, ponieważ  kody są zwracane przy innych błędach zawartych w w całym tym pliku
 https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/controllers/SecurityController.php#L1-L269
 
 
