@@ -11,10 +11,10 @@ class UserRepository extends Repository
         parent::__construct();
     }
 
-    // Zapobiegaj klonowaniu
+    
     private function __clone() {}
 
-    // Zapobiegaj deserializacji
+    
     public function __wakeup() {
         throw new Exception("Cannot unserialize singleton");
     }
