@@ -7,6 +7,7 @@ class User {
     private $name;
     private $surname;
     private $bio;
+    private $profile_picture;
     private $created_at;
     private $last_login;
 
@@ -18,6 +19,7 @@ class User {
         string $name = '',
         string $surname = '',
         ?string $bio = null,
+        ?string $profile_picture = null,
         ?string $created_at = null,
         ?string $last_login = null
     ) {
@@ -28,6 +30,7 @@ class User {
         $this->name = $name;
         $this->surname = $surname;
         $this->bio = $bio;
+        $this->profile_picture = $profile_picture;
         $this->created_at = $created_at;
         $this->last_login = $last_login;
     }
@@ -62,6 +65,10 @@ class User {
 
     public function getBio(): ?string {
         return $this->bio;
+    }
+
+    public function getProfilePicture(): ?string {
+        return $this->profile_picture;
     }
 
     public function getCreatedAt(): ?string {

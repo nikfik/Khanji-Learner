@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="login-container">
+        <img src="https://imgur.com/DWvm1wZ.png" alt="Kanji Master Logo" class="app-logo">
         <div class="header">
             <h1>Witaj z powrotem</h1>
         </div>
@@ -48,5 +49,19 @@
             Nie masz konta? <a href="/register">Zarejestruj się</a>
         </div>
     </div>
+    
+    <script>
+        // Pokaż/ukryj hasło
+        document.querySelector('.eye-icon').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+    </script>
 </body>
 </html>

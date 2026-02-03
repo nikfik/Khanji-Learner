@@ -6,6 +6,21 @@ require_once __DIR__.'/../repository/CharacterRepository.php';
 class DashboardController extends AppController{
     
     public function dashboard() {
+        // Pobierz dane użytkownika do wyświetlenia w toolbarze
+        $currentUser = null;
+        if (isset($_SESSION['user_id'])) {
+            $userRepository = UserRepository::getInstance();
+            $user = $userRepository->getUserById($_SESSION['user_id']);
+            if ($user) {
+                $currentUser = [
+                    'name' => $user->getName(),
+                    'surname' => $user->getSurname(),
+                    'username' => $user->getUsername(),
+                    'profile_picture' => $user->getProfilePicture()
+                ];
+            }
+        }
+
         // W przyszłości te dane pobierzesz z bazy danych
         $userProgress = [
             'hiragana' => ['percent' => 10, 'label' => '5/46'],
@@ -13,12 +28,30 @@ class DashboardController extends AppController{
             'kanji' => ['percent' => 7, 'label' => '150/2136']
         ];
 
-        $this->render('dashboard', ['progress' => $userProgress]);
+        $this->render('dashboard', [
+            'progress' => $userProgress,
+            'currentUser' => $currentUser
+        ]);
     }
 
     public function characters() {
         $setId = $_GET['id'] ?? 1;
         $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
+
+        // Pobierz dane użytkownika do wyświetlenia w toolbarze
+        $currentUser = null;
+        if ($userId && isset($_SESSION['logged_in'])) {
+            $userRepository = UserRepository::getInstance();
+            $user = $userRepository->getUserById($userId);
+            if ($user) {
+                $currentUser = [
+                    'name' => $user->getName(),
+                    'surname' => $user->getSurname(),
+                    'username' => $user->getUsername(),
+                    'profile_picture' => $user->getProfilePicture()
+                ];
+            }
+        }
 
         $characterRepository = new CharacterRepository();
         $characters = $characterRepository->getCharactersBySet($setId, $userId);
@@ -27,7 +60,8 @@ class DashboardController extends AppController{
 
         $this->render('characters', [
             'title' => $title,
-            'characters' => $characters
+            'characters' => $characters,
+            'currentUser' => $currentUser
         ]);
     }
 
@@ -61,8 +95,8 @@ class DashboardController extends AppController{
         // Ilość sesji nauki
         $sessionsCount = $this->getSessionsCount($userId);
         
-        // Ostatnie rysunki (6 ostatnich)
-        $recentDrawings = $characterRepository->getUserDrawings($userId, 6);
+        // Pobierz wszystkie rysunki użytkownika do wyświetlenia w galerii (pogrupowane po sesji)
+        $recentDrawings = $characterRepository->getUserDrawings($userId, 1000, 0);
 
         $userProfile = [
             'id' => $user->getId(),
@@ -71,6 +105,7 @@ class DashboardController extends AppController{
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'bio' => $user->getBio() ?? 'Brak bio',
+            'profile_picture' => $user->getProfilePicture(),
             'created_at' => $this->formatDate($user->getCreatedAt()),
             'joined' => $this->formatDate($user->getCreatedAt()),
             'level' => 'Uczeń'
@@ -171,8 +206,11 @@ class DashboardController extends AppController{
         $userId = $_SESSION['user_id'];
         $input = json_decode(file_get_contents('php://input'), true);
         
+        $name = $input['name'] ?? null;
+        $surname = $input['surname'] ?? null;
         $username = $input['username'] ?? null;
         $bio = $input['bio'] ?? null;
+        $profilePictureBase64 = $input['profilePictureBase64'] ?? null;
 
         if (!$username) {
             echo json_encode([
@@ -185,6 +223,11 @@ class DashboardController extends AppController{
         try {
             $userRepository = UserRepository::getInstance();
             
+            // Aktualizuj imię i nazwisko
+            if ($name !== null && $surname !== null) {
+                $userRepository->updateNameAndSurname($userId, $name, $surname);
+            }
+            
             // Aktualizuj username
             if (!empty($username)) {
                 $userRepository->updateUsername($userId, $username);
@@ -195,6 +238,17 @@ class DashboardController extends AppController{
                 $userRepository->updateBio($userId, $bio);
             }
 
+            // Aktualizuj zdjęcie profilowe jeśli jest
+            if (!empty($profilePictureBase64)) {
+                // WYTYCZNA #1: Ochrona przed złośliwym base64
+                // Sprawdzamy czy to jest prawidłowy base64
+                if (base64_encode(base64_decode($profilePictureBase64, true)) === $profilePictureBase64) {
+                    $userRepository->updateProfilePicture($userId, $profilePictureBase64);
+                } else {
+                    throw new Exception('Nieprawidłowy format obrazu');
+                }
+            }
+
             echo json_encode([
                 'success' => true,
                 'message' => 'Profil zaktualizowany'
@@ -203,6 +257,56 @@ class DashboardController extends AppController{
             echo json_encode([
                 'success' => false,
                 'message' => 'Błąd: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    // API: Pobierz więcej sesji rysowania
+    public function getMoreSessions() {
+        header('Content-Type: application/json');
+        
+        if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Nie zalogowany'
+            ]);
+            exit();
+        }
+
+        $userId = $_SESSION['user_id'];
+        $offset = (int)($_GET['offset'] ?? 0);
+
+        try {
+            $characterRepository = new CharacterRepository();
+            
+            // Pobierz wszystkie rysunki użytkownika
+            $allDrawings = $characterRepository->getUserDrawings($userId, 1000, 0);
+            
+            // Grupuj po session_id
+            $sessions = [];
+            foreach ($allDrawings as $drawing) {
+                $sessionId = $drawing['session_id'] ?? 'default';
+                if (!isset($sessions[$sessionId])) {
+                    $sessions[$sessionId] = [];
+                }
+                $sessions[$sessionId][] = $drawing;
+            }
+            
+            // Pobierz 5 następnych sesji zaczynając od offset
+            $sessionsList = array_slice($sessions, $offset, 5, true);
+            
+            // Sprawdź czy są jeszcze sesje do załadowania
+            $hasMore = count($sessions) > ($offset + 5);
+            
+            echo json_encode([
+                'success' => true,
+                'sessions' => $sessionsList,
+                'hasMore' => $hasMore
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
             ]);
         }
     }
