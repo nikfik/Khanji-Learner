@@ -308,7 +308,7 @@ Jest możliwość wylogowania która niszczy sesję
 ## Widoki, wyzwalacze, funkcje, transakcje
 
 
-## Akcje na referencjach (klucze obce)
+## ✅Akcje na referencjach (klucze obce)
 
 
 ## ✅Bezpieczeństwo aplikacji
