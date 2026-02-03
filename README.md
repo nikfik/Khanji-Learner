@@ -34,7 +34,7 @@ define('DATABASE', 'db');
 ?>
 ```
 
-### **Krok 3: Uruchomienie kontenerów Docker**
+ * **Krok 3: Uruchomienie kontenerów Docker**
 baza danych powinna utowrzyć się według schematu zawartego w Khanji-Learner\docker\db\init.sql
 ```bash
 docker-compose up -d --build
@@ -45,7 +45,7 @@ Kontenery będą zawierać:
 -  **Nginx** (port 80)
 -  **PHP 8.1 FPM** (internal)
 
-### **Krok 5: Dostęp do aplikacji**
+ * **Krok 5: Dostęp do aplikacji**
 
 można wtedy otworzyć przeglądarkę i przejść do:
 ```
