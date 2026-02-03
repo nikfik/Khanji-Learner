@@ -76,8 +76,77 @@ $ 4.Najciekawsze i najważniejsze części kodu
 # 5.Diagram ERD
 
 # 6.Bezpieczeństwo aplikacji
+Niżej zamieszczone jest bingo, oraz PermaLinki z fragmentami kodu, pokazujące implementacje
+<img width="855" height="867" alt="image" src="https://github.com/user-attachments/assets/d991df97-bf89-4b10-9929-1b0bd90c28c0" />
+
+## 6.A-1 Ochrona przed SQL injection (prepared statements / brak konkatenacji SQL) 
+
+metody emailExists, createUser, getUserByEmail, updateLastLogin używają `$stmt->prepare()` i `$stmt->bindParam()`, również jest brak konkatenacji stringów z SQL
+
 https://github.com/nikfik/Khanji-Learner/blob/56ae487232ba40f2937304a79124fffa6b2b5b62/src/repository/UserRepository.php#L29-L249
 
+## 6.B-1 Nie zdradzam, czy email istnieje – komunikat typu „Email lub hasło niepoprawne” 
+
+w linij 96 widnieje działający komunikat
+
+https://github.com/nikfik/Khanji-Learner/blob/bd439e77abd7e5f0962465d43f4d507a14b4c53e/src/controllers/SecurityController.php#L85-L105
+
+## 6.C-1 Walidacja formatu email po stronie serwera 
+
+walidacja jest umiejscowiona w 2 miejscach: przy logowaniu oraz przy rejestracji
+
+https://github.com/nikfik/Khanji-Learner/blob/bd439e77abd7e5f0962465d43f4d507a14b4c53e/src/controllers/SecurityController.php#L57-L64
+https://github.com/nikfik/Khanji-Learner/blob/bd439e77abd7e5f0962465d43f4d507a14b4c53e/src/controllers/SecurityController.php#L196-L203
+
+## 6.D-1 UserRepository zarządzany jako singleton 
+
+tutaj deklarujemy userRepository oraz baze danych jako singletony
+
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/repository/UserRepository.php#L5-L27
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/Database.php#L5-L64
+
+## 6.E-1 Logowanie i rejestracja dostępne tylko przez HTTPS 
+
+w Security kontroler mamy wymóg  $this->requireHTTPS();
+
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/controllers/SecurityController.php#L17-L29
+
+## 6.A-2 Metoda login/register przyjmuje dane tylko na POST, GET tylko renderuje widok 
+
+ten sam fragment kodu co przy E-1m korzystamy z "if (!$this->isPost()) {", drugi fragment kodu to adekwatnie to samo tylko dla rejestracji
+
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/controllers/SecurityController.php#L17-L29
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/controllers/SecurityController.php#L153-L165
+
+## 6.B-2 CSRF token w formularzu logowania 
+
+tak naprawde całość kodu w 1 odnośniku odpowiada za utworzenie tokenu, w drugim linku jest użycie przy logowaniu
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/services/CSRFToken.php#L1-L59
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/controllers/SecurityController.php#L34-L43
+
+## 6.C-2 CSRF token w formularzu rejestracji
+
+miejsce użycia tokenu CSRF przy rejestracji:
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/controllers/SecurityController.php#L154-L178
+
+
+## 6.D-2 Ograniczam długość wejścia (email, hasło, imię…) 
+## 6.E-2 Hasła przechowywane jako hash (bcrypt/Argon2, password_hash)
+## 6.A-3 Hasła nigdy nie są logowane w logach / errorach
+## 6.B-3 Po poprawnym logowaniu regeneruję ID sesji
+## 6.C-3 Cookie sesyjne ma flagę HttpOnly
+## 6.D-3 Cookie sesyjne ma flagę Secure 
+## 6.E-3 Cookie ma ustawione SameSite (np. Lax/Strict) 
+## 6.A-4 Limit prób logowania / blokada czasowa / CAPTCHA po wielu nieudanych próbach
+## 6.B-4 Waliduję złożoność hasła (min. długość itd.)
+## 6.C-4 Przy rejestracji sprawdzam, czy email jest już w bazie
+## 6.D-4 Dane wyświetlane w widokach są escapowane (ochrona przed XSS) 
+## 6.E-4 W produkcji nie pokazuję stack trace / surowych błędów użytkownikowi
+## 6.A-5 Zwracam sensowne kody HTTP (np. 400/401/403 przy błędach) 
+## 6.B-5 Hasło nie jest przekazywane do widoków ani echo/var_dump
+## 6.C-5 Z bazy pobieram tylko minimalny zestaw danych o użytkowniku  
+## 6.D-5 Mam poprawne wylogowanie – niszczę sesję użytkownika 
+## 6.E-5 Loguję nieudane próby logowania (bez haseł) do audytu 
 
 # 7.Self Assesment
  ✅ Checklist
