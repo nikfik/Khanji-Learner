@@ -131,22 +131,86 @@ https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada8
 
 
 ## 6.D-2 Ograniczam długość wejścia (email, hasło, imię…) 
+
+tutaj ograniczamy długość stringów do 255/100 znaków
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/controllers/SecurityController.php#L44-L46
+https://github.com/nikfik/Khanji-Learner/blob/eaf10f64b1cd462b261df1dfc51d3cada877e344/src/controllers/SecurityController.php#L180-L185
+
 ## 6.E-2 Hasła przechowywane jako hash (bcrypt/Argon2, password_hash)
+
+funkcja rejestrująca użytkownika hashuje hasło
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/repository/UserRepository.php#L44-L53
+
 ## 6.A-3 Hasła nigdy nie są logowane w logach / errorach
+
+nie dokońca wiem jak to udowodnić, dlatego tutaj jest logger w którym widać że NIE zapisujemy hasła
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/services/SecurityLogger.php#L6-L17
+
 ## 6.B-3 Po poprawnym logowaniu regeneruję ID sesji
-## 6.C-3 Cookie sesyjne ma flagę HttpOnly
-## 6.D-3 Cookie sesyjne ma flagę Secure 
-## 6.E-3 Cookie ma ustawione SameSite (np. Lax/Strict) 
+
+kończą mi się pomysły jak komentować te jednolinijkowe kody, ale proszę tutaj fragment regenerujący ID sesji
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/controllers/SecurityController.php#L107-L112
+
+## 6.C/D/E -3 Cookie sesyjne ma flagę HttpOnly/Secure/SameSite
+
+pozwolę sobie złączyć te 3 punkty w 1
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/index.php#L37-L42
+
 ## 6.A-4 Limit prób logowania / blokada czasowa / CAPTCHA po wielu nieudanych próbach
+
+jest zaimplementowana 15-sto minutowa blokada czasowa po 6 nieudanych próbach, jednakże dotyczy ona konta, więc można zalogować się na inne zamiast blokować na ip (liczę że to wystarczy)
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/services/LoginAttemptManager.php#L1-L126
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/controllers/SecurityController.php#L68-L80
+
+
 ## 6.B-4 Waliduję złożoność hasła (min. długość itd.)
+
+hasło wymaga dużej litery,małej litery, wystarczającej długości(minimum 8 znaków) oraz cyfry
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/controllers/SecurityController.php#L205-L221
+
 ## 6.C-4 Przy rejestracji sprawdzam, czy email jest już w bazie
+
+tak, poprostu tak
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/controllers/SecurityController.php#L232-L239
+
 ## 6.D-4 Dane wyświetlane w widokach są escapowane (ochrona przed XSS) 
+
+tutaj rzutujemy znaki specjalne na ascii
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/controllers/AppController.php#L14-L29
+
 ## 6.E-4 W produkcji nie pokazuję stack trace / surowych błędów użytkownikowi
+
+sprawdzałem... działa... było dużo błędów które nie wyskakiwały dzięki temu
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/index.php#L1-L26
+
 ## 6.A-5 Zwracam sensowne kody HTTP (np. 400/401/403 przy błędach) 
+
+jakby jeszcze było mało analizy securityControllera to tutaj jest całość dlatego że kody są zwracane przy innych błędach
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/controllers/SecurityController.php#L1-L269
+
+
 ## 6.B-5 Hasło nie jest przekazywane do widoków ani echo/var_dump
+
+brak metody getPassword() - hasło nigdy nie jest zwracane
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/models/User.php#L38-L80
+
 ## 6.C-5 Z bazy pobieram tylko minimalny zestaw danych o użytkowniku  
+
+
+cóż... większość danych jest wyświetlana na profilu dlatego dużo jest tych "minimalnych", ALE nie potrzebujemy hasła dlatego tej infromacji np nie pobieramy
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/models/User.php#L82-L93
+https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/repository/UserRepository.php#L77-L108
+
 ## 6.D-5 Mam poprawne wylogowanie – niszczę sesję użytkownika 
+
+tymi poleceniami niszczymy sesje oraz  pozbywamy się ciasteczek
+$_SESSION = array(); if (isset($_COOKIE[session_name()])) {setcookie(session_name(), '', time() - 3600, '/'); }
+https://github.com/nikfik/Khanji-Learner/blob/f284bf7b819a626da7a6b9c558995e9635724652/src/controllers/SecurityController.php#L135-L151
+
 ## 6.E-5 Loguję nieudane próby logowania (bez haseł) do audytu 
+
+przy nieudanej próbie jest zapisywane zdarzenie przez loggera
+https://github.com/nikfik/Khanji-Learner/blob/f284bf7b819a626da7a6b9c558995e9635724652/src/controllers/SecurityController.php#L86-L88
 
 # 7.Self Assesment
  ✅ Checklist
