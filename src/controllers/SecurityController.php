@@ -141,8 +141,8 @@ class SecurityController extends AppController {
         if (isset($_SESSION['user_id'])) {
             SecurityLogger::logLogout($_SESSION['user_id'], $_SERVER['REMOTE_ADDR'] ?? 'unknown');
         }
-
-        // WYTYCZNA #14: Destrukcja sesji
+        $_SESSION = array();
+         if (isset($_COOKIE[session_name()])) {setcookie(session_name(), '', time() - 3600, '/'); }
         session_destroy();
 
         // Przekieruj na login
