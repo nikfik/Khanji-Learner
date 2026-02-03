@@ -107,3 +107,39 @@ input[type="text"], input[type="email"], input[type="password"] {
     text-decoration: none;
     font-weight: bold;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+
+    .login-container {
+        margin: 20px auto;
+        padding: 30px 20px;
+        max-width: 100%;
+        border-radius: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="password"] {
+        padding: 14px;
+        font-size: 16px; /* Zapobiega auto-zoom na iOS */
+    }
+
+    .btn-login {
+        padding: 16px;
+        font-size: 16px;
+    }
+
+    .register-link {
+        margin-top: 20px;
+        font-size: 12px;
+    }
+}
