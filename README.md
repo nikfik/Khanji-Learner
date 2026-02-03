@@ -71,9 +71,13 @@ Poniżej zamieszczone są zdjęcia:
 | <img width="1217" height="864" alt="image" src="https://github.com/user-attachments/assets/a096fd23-cba4-4162-97df-dc78ff6455e2" /> | <img width="1838" height="1042" alt="image" src="https://github.com/user-attachments/assets/64376b5b-3a8f-4569-9570-4f3dfd25ba04" /> |
 | <img width="328" height="718" alt="image" src="https://github.com/user-attachments/assets/c36d2e23-9e95-41a1-bca1-0fe1e56b59c1" />  | <img width="429" height="927" alt="image" src="https://github.com/user-attachments/assets/4abe5189-e9b7-4274-81c2-df9aeead4d60" /> |
 
-# 4.Diagram ERD
+$ 4.Najciekawsze i najważniejsze części kodu
 
-# 5.Self Assesment
+# 5.Diagram ERD
+
+# 6.Bezpieczeństwo aplikacji
+
+# 7.Self Assesment
  ✅ Checklist
 
 - [ ] Dokumentacja w `README.md`
@@ -101,3 +105,88 @@ Poniżej zamieszczone są zdjęcia:
 - [ ] Bezpieczeństwo aplikacji
 - [ ] Brak replikacji kodu (DRY)
 - [ ] Czystość i przejrzystość kodu
+
+      - [ ] Dokumentacja w `README.md`
+## Dokumentacja w `README.md`
+(brak możliwości samooceny pod tym względem, ale jesli profesor to czyta to raczej plik README istnieje)
+
+## Architektura aplikacji (MVC / Frontend–Backend / inna)
+
+
+## Kod napisany obiektowo (część backendowa)
+
+
+## Diagram ERD
+
+
+## Repozytorium Git (historia commitów, struktura)
+
+aplikacja została ukończona w 36 commitów (pokazane na ostatnim branchu czyli mobile-view, aby uniknąć liczenia commitów związanych z readme.md)
+pierwsze i najważniejsze kroki zostały zaczęte w ferie świąteczne, ale później ze względu na inne przedmioty i projekty nastała przerwa w commitach, dlatego największy skok jest od dnia 30.01 do 03.02
+<img width="1008" height="357" alt="image" src="https://github.com/user-attachments/assets/6b73d6c2-6e03-427a-b989-e68cdfffcdce" />
+<img width="1011" height="711" alt="image" src="https://github.com/user-attachments/assets/14a2f0b2-5d27-4144-b285-61dc8e63eed5" />
+
+
+## Realizacja tematu projektu
+
+
+## HTML
+
+
+## PostgreSQL
+
+
+## Złożoność bazy danych
+
+
+## Eksport bazy danych do pliku `.sql`
+
+
+## PHP
+
+
+## JavaScript
+
+
+## Fetch API (AJAX)
+
+
+## Design (estetyka interfejsu)
+
+
+## Responsywność
+
+
+## Logowanie użytkownika
+
+
+## Sesja użytkownika
+
+
+## Uprawnienia użytkowników
+
+aplikacja nie ma ról możliwych do przypisania użytkowników, dlatego  nie ma możliwości przypisania im uprawnień.
+jedyne co tutaj mógłbym wskazać to fakt że użytkownicy niezalogowani mają możliwość przeglądania modółów, ale nie mogą uruchomić opcji nauki,
+co zostało zaimplementowane aby uniknąć błędów związanych z  historią oraz postępem nauki.
+
+## Role użytkowników (co najmniej dwie)
+jak wspomniane wyżej, użytkownicy nie mają ról, na ten stan aplikacji, rolę nie wydawały się być konieczne, dlatego że to bardziej aplikacja prywatna.
+bardzo prosto było by dodać w tabeli użytkowników pole z przypisaną rolą, ale ich funkcjonalność była mocno ograniczona 
+
+
+## Wylogowywanie
+
+
+## Widoki, wyzwalacze, funkcje, transakcje
+
+
+## Akcje na referencjach (klucze obce)
+
+
+## Bezpieczeństwo aplikacji
+Punkt 6 w bardziej szczegółowy sposób opisuje bingo podane na zajęciach, więc odsyłam do tego miejsca po więcej informacji.
+
+## Brak replikacji kodu (DRY)
+
+
+## Czystość i przejrzystość kodu
