@@ -1,8 +1,63 @@
 # 1.Wstęp
 ## Opis projektu
-Projekt repreentuje aplikacje webową służącą do nauki Japońskich znaków oraz alfabetów.
+Projekt reprezentuje aplikacje webową służącą do nauki Japońskich znaków oraz alfabetów. Aplikacja jest wzorowana na aplikacjach typu duolingo/quizlet, ale jest bardziej przystosowana do nauki języków opierających się na innym piśmiennictwie niż alfabet łaciński( w typ przypadku są to alfabety hiragana, katakana oraz symbole kanji).
 
+
+
+Aplikacja została stworzona z wykorzystaniem następujących technologii:
+| Warstwa | Technologia |
+|---------|-------------|
+| **Frontend** | HTML5, JavaScript (Fetch API) |
+| **Backend** | PHP 8+ (OOP, Singleton, Repository Pattern) |
+| **Baza danych** | PostgreSQL 18.1 (Views, Triggers, Functions) |
+| **Infrastruktura** | Docker & Docker Compose |
+
+
+*(kończąc wstęp zaznaczę tylko, że jestem świadomy literówki w nazwie repozytorium)*
 # 2.Instrukcja
+
+  * **krok 1: Klonowanie repozytorium**
+```bash
+git clone https://github.com/nikfik/Khanji-Learner.git
+cd Khanji-Learner
+```
+
+ * **Krok 2: Przygotowanie zmiennych środowiskowych**
+
+proszę sprawdzić plik `config.php` w głównym katalogu i upewnić się, że zawiera:
+```php
+<?php
+define('USERNAME', 'docker');
+define('PASSWORD', 'docker');
+define('HOST', 'db');  
+define('DATABASE', 'db');
+?>
+```
+
+ * **Krok 3: Uruchomienie kontenerów Docker**
+baza danych powinna utowrzyć się według schematu zawartego w Khanji-Learner\docker\db\init.sql
+```bash
+docker-compose up -d --build
+```
+
+Kontenery będą zawierać:
+-  **PostgreSQL 18.1** (port 5432)
+-  **Nginx** (port 80)
+-  **PHP 8.1 FPM** (internal)
+
+ * **Krok 5: Dostęp do aplikacji**
+
+można wtedy otworzyć przeglądarkę i przejść do:
+```
+http://localhost/8080/
+```
+
+  * **Dane logowania testowego:**
+- **Login:** `testuser`
+- **Email:** `test@example.com`
+- **Hasło:** `Test1234`
+
+---
 
 # 3.Widoki
 Całość projektu składa się z 6-ciu głównych widoków: 
@@ -71,9 +126,97 @@ Poniżej zamieszczone są zdjęcia:
 | <img width="1217" height="864" alt="image" src="https://github.com/user-attachments/assets/a096fd23-cba4-4162-97df-dc78ff6455e2" /> | <img width="1838" height="1042" alt="image" src="https://github.com/user-attachments/assets/64376b5b-3a8f-4569-9570-4f3dfd25ba04" /> |
 | <img width="328" height="718" alt="image" src="https://github.com/user-attachments/assets/c36d2e23-9e95-41a1-bca1-0fe1e56b59c1" />  | <img width="429" height="927" alt="image" src="https://github.com/user-attachments/assets/4abe5189-e9b7-4274-81c2-df9aeead4d60" /> |
 
-$ 4.Najciekawsze i najważniejsze części kodu
+# 4.Najciekawsze i najważniejsze części kodu
 
-# 5.Diagram ERD
+osobiście dla mnie, kluczową rolą w projekcie nie były jakieś proste operacje na bazach danych, ale właśnie system nauki/fiszek, który sprawił mi najwięcej fanu (i problemów)
+
+w momencie w którym klikamy przycisk "rozpocznij naukę" w danym module, losowane jest 15 znaków z danego modułu (albo mniej jeśli moduł nie ma wystarczającej liczby znaków) oraz otwiera się takie oto okienko.
+
+<img width="721" height="508" alt="image" src="https://github.com/user-attachments/assets/7b1eadbb-fa5c-4232-b326-8ab5118e75c2" />
+
+na nim widnieje tłumaczenie danego znaku, celem zadania jest narysowanie japońskiego symbolu po tym znaku.
+oczywiście na początku nikt nie zna symboli dlatego na starcie można podejrzeć znak.
+
+<img width="729" height="781" alt="image" src="https://github.com/user-attachments/assets/11eddbf3-d21c-4676-ba41-8c358761704c" />
+
+w następnym kroku po kliknięciu zacznij rysować uruchamia się działająca canva na której trzeba narysować dany symbol.
+od tego momentu to działa jak fiszki, jeśli użytkownik jest zadowolony z swojego rezultatu to może zaakceptować, że symbol jest poprawny a jak nie, błędny.
+Działa to na zasadzie zaufania użytkownikowi że poprawnie się oceni, ale na tym w końcu działają fiszki.
+Po zakończeniu nauki te słówka które zostały poprawnie narysowane dostają licznik +1 do mastery, w końcu jak się już coś rysuje po raz 10 to w głowie coś raczej zostaje.
+https://github.com/nikfik/Khanji-Learner/blob/6583eeaf605934885d650f149403e14820fd2201/public/scripts/main.js#L1-L299
+
+
+
+drugą ciekawą funkcjonalnością jest przegląd kolejności rysowania kresek, w menu characters każdy znak jest interaktywny, po kliknięciu w niego pokazywana poprawna kolejność rysowania, która pomaga w dobrym odruchu rysowania znaku 
+(ta funkcjonalność na ten moment jest ograniczona tylko do kilku znaków z alfabetu katakany, ze względu na czasochłonność uploadowania zdjęcia dla każdego znaku)
+
+<img width="570" height="546" alt="image" src="https://github.com/user-attachments/assets/3a0adb10-d3f2-4af2-bb85-1f4fad028396" />
+
+https://github.com/nikfik/Khanji-Learner/blob/6583eeaf605934885d650f149403e14820fd2201/public/views/characters.html#L44-L60
+
+
+# 5.Struktura projektu
+
+```
+Khanji-Learner/
+├── docker/                    # Konfiguracja Docker
+│   ├── db/
+│   │   ├── Dockerfile        # Obraz PostgreSQL
+│   │   └── init.sql          # Schemat bazy danych (automat. ładowany)
+│   ├── nginx/
+│   │   ├── Dockerfile
+│   │   └── nginx.conf        # Konfiguracja reverse proxy
+│   └── php/
+│       └── Dockerfile        # Obraz PHP-FPM
+│
+├── src/                       # Kod backendu
+│   ├── controllers/           # Logika biznesowa
+│   │   ├── SecurityController.php
+│   │   ├── DashboardController.php
+│   │   ├── CharacterController.php
+│   │   └── ModuleController.php
+│   ├── models/               # Modele danych
+│   │   └── User.php
+│   ├── repository/           # Dostęp do bazy danych
+│   │   ├── Repository.php    # Klasa bazowa
+│   │   ├── UserRepository.php
+│   │   ├── CharacterRepository.php
+│   │   ├── ModuleRepository.php
+│   │   └── UserActivityRepository.php
+│   └── services/             # Usługi pomocnicze
+│       ├── CSRFToken.php     # Ochrona przed atakami
+│       ├── SecurityLogger.php
+│       └── LoginAttemptManager.php
+│
+├── public/                    # Frontend
+│   ├── views/                # Szablony HTML
+│   │   ├── login.html
+│   │   ├── register.html
+│   │   ├── dashboard.html
+│   │   ├── characters.html
+│   │   ├── modules.html
+│   │   ├── profile.html
+│   │   └── 404.html
+│   ├── styles/               # Arkusze stylów CSS
+│   │   ├── main.css
+│   │   ├── login.css
+│   │   ├── characters.css
+│   │   ├── modules.css
+│   │   ├── profile.css
+│   │   └── toolbar.css
+│   └── scripts/              # Skrypty JavaScript
+│       ├── main.js           # Funkcjonalność nauki
+│       ├── modules.js        # Zarządzanie modułami
+│       └── profile.js        # Profil użytkownika
+│
+├── Database.php              # Singleton do połączenia z bazą
+├── Routing.php               # Router aplikacji
+├── config.php                # Konfiguracja
+├── index.php                 # Punkt wejścia
+├── database_schema.sql       # Schemat bazy danych
+├── docker-compose.yaml       # Konfiguracja Docker Compose
+└── README.md                 # Ten plik
+```
 
 # 6.Bezpieczeństwo aplikacji
 Niżej zamieszczone jest bingo, oraz PermaLinki z fragmentami kodu, pokazujące implementacje
@@ -185,7 +328,7 @@ https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded
 
 ## 6.A-5 Zwracam sensowne kody HTTP (np. 400/401/403 przy błędach) 
 
-jakby jeszcze było mało analizy securityControllera to tutaj jest całość dlatego że kody są zwracane przy innych błędach
+jakby jeszcze było mało analizy securityControllera  ten krok jest realizowany w jego całości, ponieważ  kody są zwracane przy innych błędach zawartych w w całym tym pliku
 https://github.com/nikfik/Khanji-Learner/blob/360940cca3f4bae6e702f17ba0972b1ded36418a/src/controllers/SecurityController.php#L1-L269
 
 
@@ -228,6 +371,8 @@ jest zastosowane dziedziczenie np (kontrolery po appcontroler), singleton, model
 
 ## ✅ Diagram ERD
 
+<img width="729" height="831" alt="image" src="https://github.com/user-attachments/assets/662cb49e-a6e6-472b-81a8-e29921393029" />
+
 
 ## ✅Repozytorium Git (historia commitów, struktura)
 
@@ -251,10 +396,11 @@ jest załączona baza danych w PostgreSQL
 
 ## ✅Złożoność bazy danych
 
+baza danych nie jest jakoś bardzo skomplikowana ale wystarczająco na ten typ aplikacji
 
 ## ✅Eksport bazy danych do pliku `.sql`
 
-baza jest dostępna w repozytorium, jedyne co to przy imporcie może dojść do błędu gdzie polskie znaki są zastępowane przez "??".
+baza jest dostępna w repozytorium, jedyne co to przy imporcie może dojść do błędu gdzie polskie znaki są zastępowane przez "??"
 
 ## ✅PHP
 
@@ -303,13 +449,18 @@ bardzo prosto było by dodać w tabeli użytkowników pole z przypisaną rolą, 
 
 ## ✅Wylogowywanie
 
-Jest możliwość wylogowania która niszczy sesję
+Jest możliwość wylogowania która niszczy sesję,
+https://github.com/nikfik/Khanji-Learner/blob/f284bf7b819a626da7a6b9c558995e9635724652/src/controllers/SecurityController.php#L135-L151
 
-## Widoki, wyzwalacze, funkcje, transakcje
+## ✅Widoki, wyzwalacze, funkcje, transakcje
 
+nie ma transakcji ale całą reszta tak
+https://github.com/nikfik/Khanji-Learner/blob/6583eeaf605934885d650f149403e14820fd2201/docker/db/init.sql#L136-L236
 
 ## ✅Akcje na referencjach (klucze obce)
 
+są stosowane klucze obce
+https://github.com/nikfik/Khanji-Learner/blob/6583eeaf605934885d650f149403e14820fd2201/docker/db/init.sql#L82-L93
 
 ## ✅Bezpieczeństwo aplikacji
 Punkt 6 w bardziej szczegółowy sposób opisuje bingo podane na zajęciach, więc odsyłam do tego miejsca po więcej informacji.
